@@ -22,7 +22,8 @@ char *trim(char *str) {
 }
 
 int str_to_int(char c) {
-    short int flag = 0, i;
+    bool flag = 0;
+    short int i;
     for (i = 0; i < 10 && !flag; i++) {
         if (c == (char)(48 + i)) {
             flag = 1;
@@ -43,7 +44,7 @@ int is_number(char sym) {
 
 int  is_operation_for_transform(char c) {
     const char opertations[] = {'*', '/', '+', '-', '~', '(', ')', 'x', '.'};
-    unsigned short int flag = 0;
+    bool flag = 0;
     for (int i = 0; i < 9 && !flag; i++) {
         if (c == opertations[i])
             flag = 1;
@@ -53,7 +54,7 @@ int  is_operation_for_transform(char c) {
 
 int is_binary_operator(char c) {
     const char opertations[] = {'*', '/', '+', '-'};
-    unsigned short int flag = 0;
+    bool flag = 0;
     for (int i = 0; i < 4 && !flag; i++) {
         if (c == opertations[i])
             flag = 1;
@@ -62,7 +63,7 @@ int is_binary_operator(char c) {
 }
 int is_operator(char c) {
     const char opertations[] = {'l', 't', 'c', 'C', 's', 'S'};
-    unsigned short int flag = 0;
+    bool flag = 0;
     for (int i = 0; i < 6 && !flag; i++) {
         if (c == opertations[i])
             flag = 1;
@@ -71,7 +72,7 @@ int is_operator(char c) {
 }
 int is_operation_for_parse(char c) {
     const char opertations[] = {'*', '/', '+', '-', '~', '(', 'l', 't', 'c', 'C', 's', 'S', '.'};
-    unsigned short int flag = 0;
+    bool flag = 0;
     for (int i = 0; i < 13 && !flag; i++) {
         if (c == opertations[i])
             flag = 1;
@@ -110,9 +111,9 @@ int valid_str(char* str) {
     }
     return count;
 }
-char* transform(char* str, unsigned short int *flag) {
+char* transform(char* str, bool *flag) {
     int length = strlen(str) - 1, i = 0, j;
-    unsigned short int flag_num_op = 0, flag_un_op = 0;
+    bool flag_num_op = 0, flag_un_op = 0;
     while (i < length && *flag == 0) {
         while (is_operation_for_transform(str[i]) || is_number(str[i])) {
             i++;
@@ -174,7 +175,7 @@ Deque* parse(char* str) {
     Deque* head = NULL;
     data.num = 0;
     int length = strlen(str), i = 0;
-    unsigned short int flag_error = 0;
+    bool flag_error = 0;
     while (i < length && !flag_error) {
         if (str[i] == 'x') {
             data.sym = 'x';

@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setScene(scene);
     pen.setColor(Qt::red);
     pen.setWidth(2);
-    //ui->graphicsView->setRenderHint(QPainter::Antialiasing);
+    ui->graphicsView->setRenderHint(QPainter::Antialiasing);
 }
 
 MainWindow::~MainWindow() {
@@ -51,6 +51,24 @@ void MainWindow::PlotGraph(char *str) {
     }
 }
 
+//bool MainWindow::FileExists(FILE* f_param) {
+//    bool flag = true;
+//    if(!f_param) {
+//        flag = false;
+//    }
+//    return flag;
+//}
+
+bool MainWindow::FileEmpty(FILE* f_param) {
+    bool flag = true;
+    fseek(f_param, 0, SEEK_END);
+    long pos = ftell(f_param);
+    if (pos > 0 ) {
+        rewind(f_param);
+        flag = false;
+    }
+    return flag;
+}
 void MainWindow::on_pushButton_clicked() {
     QString buf = ui->lineEdit->text();
     string std_str = buf.toStdString();
@@ -58,11 +76,27 @@ void MainWindow::on_pushButton_clicked() {
         str[i] = std_str[i];
     str[(int)std_str.length()] = '\0';
     trim(str);
-    unsigned short int flag = 0;
+    Record record;
+    time_t now =time(0);
+    tm *ltm = localtime(&now);
+    char buffer[20];
+    strftime(buffer, 20, "[%d.%m.%y %H:%M:%S]", ltm);
+    strcpy(record.date, buffer);
+    strcpy(record.func, str);
+    bool flag = 0;
     transform(str, &flag);
     if (valid_str(str) != 0 || flag || strlen(str) == 0) {
         printf("\n\t\tНеверное выражение либо, возможно, не хватает скобки!!!!\n");
     } else {
+        if (!(f_logs = fopen("./logs", "rb+")) || FileEmpty(f_logs)) {
+            f_logs = fopen("./logs", "wb");
+            rewind(f_logs);
+        } else {
+            f_logs = fopen("./logs", "a+b");
+            fseek(f_logs, 0, SEEK_END);
+        }
+        fwrite(&record, sizeof(Record), 1, f_logs);
+        fclose(f_logs);
         ui->lineEdit->setEnabled(false);
         ui->pushButton->setEnabled(false);
         ui->pushButton_2->setEnabled(true);
@@ -122,25 +156,61 @@ void MainWindow::on_pushButton_4_clicked() {
 void MainWindow::on_pushButton_7_clicked(){
     scene->addRect(245, 0, 490, 390, QPen(Qt::white), QBrush(Qt::white));
     if (ymax - ymin > 6) {
-        ymin += 3;
-        ymax -= 3;
+        ymin += 1.5;
+        ymax -= 1.5;
     }
     if (xmax - xmin > 6) {
-        xmin += 3;
-        xmax -= 3;
+        xmin += 2.5;
+        xmax -= 2.5;
     }
     PlotGraph(str);
 }
 
 void MainWindow::on_pushButton_8_clicked() {
     scene->addRect(245, 0, 490, 390, QPen(Qt::white), QBrush(Qt::white));
-    ymin -= 3;
-    ymax += 3;
-    xmin -= 3;
-    xmax += 3;
+    ymin -= 1.5;
+    ymax += 1.5;
+    xmin -= 2.5;
+    xmax += 2.5;
     PlotGraph(str);
 }
 
+void MainWindow::on_pushButton_9_clicked() {
+    Record record;
+    if ((f_logs = fopen("./logs", "r+b")) != NULL && !FileEmpty(f_logs)) {
+        int count = GetRecordsCountInFile(f_logs);
+        for (int i = 0; i < count; ++i) {
+            record = ReadRecordFromFile(f_logs, i);
+            printf("%s: %s\n", record.date, record.func);
+        }
+        fclose(f_logs);
+    }
+}
+
+Record MainWindow::ReadRecordFromFile(FILE *pfile, int index) {
+    int offset = index * sizeof(Record);
+    fseek(pfile, offset, SEEK_SET);
+    Record record;
+    fread(&record, sizeof(Record), 1, pfile);
+    rewind(pfile);
+    return record;
+}
+
+int MainWindow::GetFileSizeInBytes(FILE *pfile) {
+    int size = 0;
+    fseek(pfile, 0, SEEK_END);
+    size = ftell(pfile);
+    rewind(pfile);
+    return size;
+}
+
+int MainWindow::GetRecordsCountInFile(FILE *pfile) {
+    return GetFileSizeInBytes(pfile) / sizeof(Record);
+}
+
+void MainWindow::on_pushButton_10_clicked() {
+    exit(0);
+}
 
 /* ymax = ymin = f[0];
     for (i = 1; i < SCREENW; ++i) {

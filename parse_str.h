@@ -17,6 +17,6 @@ int is_operation_for_parse(char c);
 int  is_operation_for_transform(char c);
 double get_number(char* str, int *index);
 int cmp_priority(char sym1, char sym2);
-char* transform(char* str, unsigned short int *flag);
+char* transform(char* str, bool *flag);
 Deque* parse(char* str);
 #endif  //  SRC_PARSE_STR_H_
