@@ -4,6 +4,9 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    setWindowTitle("GROW");
+    ui->checkBox->setCheckState(Qt::Unchecked);
+    ui->checkBox->setEnabled(false);
     ui->pushButton_2->setEnabled(false);
     ui->pushButton_3->setEnabled(false);
     ui->pushButton_4->setEnabled(false);
@@ -21,34 +24,6 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow() {
     delete scene;
     delete ui;
-}
-
-void MainWindow::PlotGraph(char *str) {
-    Deque *head, *tail;
-    double x, ky, kx = (xmax - xmin) / (SCREENW - 1);
-    int i;
-    for (i = 0, x = xmin; i < SCREENW; ++i, x += kx) {
-        head = parse(str);
-        tail = get_tail(head);
-        f[i] = calculate(tail, x);
-    }
-    ky = (ymax - ymin) / (SCREENH - 1);
-    for (i = 0, x = xmin; i < SCREENW; i++, x += kx) {
-        screen[i].x = (int)(round((x - xmin) / kx)) + 245;
-        screen[i].y = SCREENH - (int)(round((f[i] - ymin) / ky)) - 1;
-    }
-    double y0 = SCREENH - (int)(round((0 - ymin) / ky)) - 1, x0 = (int)(round((0 - xmin) / kx));
-    if (y0 >= 0 && y0 <= 390)
-        scene->addLine(245, y0, 735, y0, QPen(Qt::black));
-    if (x0 >= 0 && x0 <= 490)
-        scene->addLine(x0 + 245, 0, x0 + 245, 390 , QPen(Qt::black));
-    for (i = 0; i < SCREENW - 1; ++i) {
-        if (screen[i].y >= 0 && screen[i].y <= 390
-                && screen[i + 1].y >= 0 && screen[i + 1].y <= 390
-                && screen[i].x >= 245 && screen[i].x <= 735
-                && screen[i + 1].x >= 245 && screen[i + 1].x <= 735)
-            scene->addLine(screen[i].x, screen[i].y, screen[i + 1].x, screen[i + 1].y, pen);
-    }
 }
 
 //bool MainWindow::FileExists(FILE* f_param) {
@@ -69,131 +44,41 @@ bool MainWindow::FileEmpty(FILE* f_param) {
     }
     return flag;
 }
-void MainWindow::on_pushButton_clicked() {
-    QString buf = ui->lineEdit->text();
-    string std_str = buf.toStdString();
-    for (int i = 0; i < (int)std_str.length(); i++)
+
+void MainWindow::SetStr() {
+    string std_str = ui->lineEdit->text().toStdString();
+    int len = (int)std_str.length();
+    for (int i = 0; i < len; i++)
         str[i] = std_str[i];
-    str[(int)std_str.length()] = '\0';
+    str[len] = '\0';
     trim(str);
-    Record record;
-    time_t now =time(0);
+
+}
+void MainWindow::WriteFile(char *func) {
+    if (!(f_logs = fopen("./logs", "rb+")) || FileEmpty(f_logs)) {
+        f_logs = fopen("./logs", "wb");
+        rewind(f_logs);
+    } else {
+        f_logs = fopen("./logs", "a+b");
+        fseek(f_logs, 0, SEEK_END);
+    }
+    time_t now = time(0);
     tm *ltm = localtime(&now);
     char buffer[20];
     strftime(buffer, 20, "[%d.%m.%y %H:%M:%S]", ltm);
+    strcpy(record.func, func);
     strcpy(record.date, buffer);
-    strcpy(record.func, str);
-    bool flag = 0;
-    transform(str, &flag);
-    if (valid_str(str) != 0 || flag || strlen(str) == 0) {
-        printf("\n\t\tНеверное выражение либо, возможно, не хватает скобки!!!!\n");
-    } else {
-        if (!(f_logs = fopen("./logs", "rb+")) || FileEmpty(f_logs)) {
-            f_logs = fopen("./logs", "wb");
-            rewind(f_logs);
-        } else {
-            f_logs = fopen("./logs", "a+b");
-            fseek(f_logs, 0, SEEK_END);
-        }
-        fwrite(&record, sizeof(Record), 1, f_logs);
-        fclose(f_logs);
-        ui->lineEdit->setEnabled(false);
-        ui->pushButton->setEnabled(false);
-        ui->pushButton_2->setEnabled(true);
-        ui->pushButton_3->setEnabled(true);
-        ui->pushButton_4->setEnabled(true);
-        ui->pushButton_5->setEnabled(true);
-        ui->pushButton_6->setEnabled(true);
-        ui->pushButton_7->setEnabled(true);
-        ui->pushButton_8->setEnabled(true);
-        PlotGraph(str);
-    }
-}
-
-void MainWindow::on_pushButton_2_clicked() {
-    scene->addRect(245, 0, 490, 390, QPen(Qt::white), QBrush(Qt::white));
-    str[0] = '\0';
-    ui->graphicsView->repaint();
-    ui->lineEdit->setEnabled(true);
-    ui->pushButton->setEnabled(true);
-    ui->pushButton_2->setEnabled(false);
-    ui->pushButton_3->setEnabled(false);
-    ui->pushButton_4->setEnabled(false);
-    ui->pushButton_5->setEnabled(false);
-    ui->pushButton_6->setEnabled(false);
-    ui->pushButton_7->setEnabled(false);
-    ui->pushButton_8->setEnabled(false);
-    ui->lineEdit->setText("");
-}
-void MainWindow::on_pushButton_5_clicked() {
-    scene->addRect(245, 0, 490, 390, QPen(Qt::white), QBrush(Qt::white));
-    ymin += 0.5;
-    ymax += 0.5;
-    PlotGraph(str);
-}
-
-void MainWindow::on_pushButton_6_clicked() {
-    scene->addRect(245, 0, 490, 390, QPen(Qt::white), QBrush(Qt::white));
-    ymin -= 0.5;
-    ymax -= 0.5;
-    PlotGraph(str);
-}
-
-void MainWindow::on_pushButton_3_clicked() {
-    scene->addRect(245, 0, 490, 390, QPen(Qt::white), QBrush(Qt::white));
-    xmin -= 1;
-    xmax -= 1;
-    PlotGraph(str);
-}
-
-void MainWindow::on_pushButton_4_clicked() {
-    scene->addRect(245, 0, 490, 390, QPen(Qt::white), QBrush(Qt::white));
-    xmin += 1;
-    xmax += 1;
-    PlotGraph(str);
-}
-
-void MainWindow::on_pushButton_7_clicked(){
-    scene->addRect(245, 0, 490, 390, QPen(Qt::white), QBrush(Qt::white));
-    if (ymax - ymin > 6) {
-        ymin += 1.5;
-        ymax -= 1.5;
-    }
-    if (xmax - xmin > 6) {
-        xmin += 2.5;
-        xmax -= 2.5;
-    }
-    PlotGraph(str);
-}
-
-void MainWindow::on_pushButton_8_clicked() {
-    scene->addRect(245, 0, 490, 390, QPen(Qt::white), QBrush(Qt::white));
-    ymin -= 1.5;
-    ymax += 1.5;
-    xmin -= 2.5;
-    xmax += 2.5;
-    PlotGraph(str);
-}
-
-void MainWindow::on_pushButton_9_clicked() {
-    Record record;
-    if ((f_logs = fopen("./logs", "r+b")) != NULL && !FileEmpty(f_logs)) {
-        int count = GetRecordsCountInFile(f_logs);
-        for (int i = 0; i < count; ++i) {
-            record = ReadRecordFromFile(f_logs, i);
-            printf("%s: %s\n", record.date, record.func);
-        }
-        fclose(f_logs);
-    }
+    fwrite(&record, sizeof(Record), 1, f_logs);
+    fclose(f_logs);
 }
 
 Record MainWindow::ReadRecordFromFile(FILE *pfile, int index) {
     int offset = index * sizeof(Record);
     fseek(pfile, offset, SEEK_SET);
-    Record record;
-    fread(&record, sizeof(Record), 1, pfile);
+    Record l_record;
+    fread(&l_record, sizeof(Record), 1, pfile);
     rewind(pfile);
-    return record;
+    return l_record;
 }
 
 int MainWindow::GetFileSizeInBytes(FILE *pfile) {
@@ -208,8 +93,191 @@ int MainWindow::GetRecordsCountInFile(FILE *pfile) {
     return GetFileSizeInBytes(pfile) / sizeof(Record);
 }
 
+void MainWindow::PlotGraph(char *str) {
+    double x, ky, kx = (xmax - xmin) / (SCREENW - 1);
+    int i;
+    bool check = ui->checkBox->checkState();
+    for (i = 0, x = xmin; i < SCREENW; ++i, x += kx) {
+        head = parse(str);
+        tail = get_tail(head);
+        f[i] = calculate(tail, x);
+    }
+    if (check) {
+        ymax = ymin = f[0];
+        for (i = 1; i < SCREENW; ++i){
+            if (ymax < f[i])
+                ymax = f[i];
+            if (ymin > f[i])
+                ymin = f[i];
+        }
+    }
+    ky = (ymax - ymin) / (SCREENH - 1);
+    for (i = 0, x = xmin; i < SCREENW; i++, x += kx) {
+        screen[i].x = (round((x - xmin) / kx)) + 250;
+        screen[i].y = SCREENH - (round((f[i] - ymin) / ky)) - 1;
+    }
+    double y0 = SCREENH - (int)(round((0 - ymin) / ky)) - 1,
+            x0 = (int)(round((0 - xmin) / kx));
+    QString str_value_point;
+    if (y0 >= 10 && y0 <= 495) {
+        scene->addLine(250, y0, 750, y0, QPen(Qt::black));
+        double dx = (xmax - xmin) / 20;
+        for (i = 275, x = xmin + dx; i < 726; i += 25, x += dx) {
+            QGraphicsTextItem *item = new QGraphicsTextItem;
+            str_value_point.setNum(x);
+            item->setHtml(str_value_point);
+            item->setPos(i - 10, y0 - 5);
+            if ((int)x) {
+                scene->addItem(item);
+                scene->addEllipse(i, y0, 2, 2, pen);
+            }
+        }
+    }
+    if (x0 >= 5 && x0 <= 495) {
+        double y, dy = (ymax - ymin) / 20;
+        scene->addLine(x0 + 250, 0, x0 + 250, 500 , QPen(Qt::black));
+        for (i = 25, y = ymax - dy; i < 500; i += 25, y -= dy) {
+            QGraphicsTextItem *item = new QGraphicsTextItem;
+            str_value_point.setNum(y);
+            item->setHtml(str_value_point);
+            item->setPos(250 + x0, i - 12);
+            if ((int)y) {
+                scene->addItem(item);
+                scene->addEllipse(250 + x0, i, 2, 2, pen);
+            }
+        }
+    }
+    for (i = 0; i < SCREENW - 1; ++i) {
+        if (screen[i].y >= 0 && screen[i].y <= 500
+                && screen[i + 1].y >= 0 && screen[i + 1].y <= 500
+                && screen[i].x >= 250 && screen[i].x <= 750
+                && screen[i + 1].x >= 250 && screen[i + 1].x <= 750)
+            scene->addLine(screen[i].x, screen[i].y, screen[i + 1].x, screen[i + 1].y, pen);
+    }
+}
+
+void MainWindow::on_pushButton_clicked() {
+    bool flag = 0;
+    char stroka[50];
+    SetStr();
+    strcpy(stroka, str);
+    transform(str, &flag);
+    if (valid_str(str) != 0 || flag || strlen(str) == 0) {
+        QMessageBox msgBox(QMessageBox::Information,
+                           "GROW", "Invalid expression entered.",
+                           QMessageBox::Ok);
+        msgBox.exec();
+    } else {
+        WriteFile(stroka);
+        ui->lineEdit->setEnabled(false);
+        ui->pushButton->setEnabled(false);
+        ui->checkBox->setEnabled(true);
+        ui->pushButton_2->setEnabled(true);
+        ui->pushButton_3->setEnabled(true);
+        ui->pushButton_4->setEnabled(true);
+        ui->pushButton_5->setEnabled(true);
+        ui->pushButton_6->setEnabled(true);
+        ui->pushButton_7->setEnabled(true);
+        ui->pushButton_8->setEnabled(true);
+        clock_t time_start = clock();
+        PlotGraph(str);
+        clock_t time_end = clock();
+        double time_dif = (double)(time_end - time_start) / CLOCKS_PER_SEC;
+        printf("%lf\n", time_dif);
+    }
+}
+
+void MainWindow::on_pushButton_2_clicked() {
+    scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    str[0] = '\0';
+    ui->graphicsView->repaint();
+    ui->checkBox->setEnabled(false);
+    ui->lineEdit->setEnabled(true);
+    ui->pushButton->setEnabled(true);
+    ui->pushButton_2->setEnabled(false);
+    ui->pushButton_3->setEnabled(false);
+    ui->pushButton_4->setEnabled(false);
+    ui->pushButton_5->setEnabled(false);
+    ui->pushButton_6->setEnabled(false);
+    ui->pushButton_7->setEnabled(false);
+    ui->pushButton_8->setEnabled(false);
+    ui->lineEdit->setText("");
+}
+
+void MainWindow::on_pushButton_3_clicked() {
+    scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    xmin -= 1;
+    xmax -= 1;
+    PlotGraph(str);
+}
+
+void MainWindow::on_pushButton_4_clicked() {
+    scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    xmin += 1;
+    xmax += 1;
+    PlotGraph(str);
+}
+
+void MainWindow::on_pushButton_5_clicked() {
+    scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    ymin += 1;
+    ymax += 1;
+    PlotGraph(str);
+}
+
+void MainWindow::on_pushButton_6_clicked() {
+    scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    ymin -= 1;
+    ymax -= 1;
+    PlotGraph(str);
+}
+
+void MainWindow::on_pushButton_7_clicked(){
+    scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    if (ymax - ymin > 10) {
+        ymin += 1;
+        ymax -= 1;
+    }
+    if (xmax - xmin > 10) {
+        xmin += 1;
+        xmax -= 1;
+    }
+    PlotGraph(str);
+}
+
+void MainWindow::on_pushButton_8_clicked() {
+    scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    ymin -= 1;
+    ymax += 1;
+    xmin -= 1;
+    xmax += 1;
+    PlotGraph(str);
+}
+
+void MainWindow::on_pushButton_9_clicked() {
+    Record l_record;
+    if ((f_logs = fopen("./logs", "r+b")) != NULL && !FileEmpty(f_logs)) {
+        int count = GetRecordsCountInFile(f_logs);
+        for (int i = 0; i < count; ++i) {
+            l_record = ReadRecordFromFile(f_logs, i);
+            printf("%s: %s\n", l_record.date, l_record.func);
+        }
+        fclose(f_logs);
+    }
+}
 void MainWindow::on_pushButton_10_clicked() {
     exit(0);
+}
+
+void MainWindow::on_checkBox_stateChanged(int arg1) {
+    if (ui->lineEdit->text().length() != 0) {
+        scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+        ymax = 10;
+        ymin = -10;
+        xmin = -10;
+        xmax = 10;
+        PlotGraph(str);
+    }
 }
 
 /* ymax = ymin = f[0];
@@ -221,9 +289,6 @@ void MainWindow::on_pushButton_10_clicked() {
     }
 
     ky = (ymax - ymin) / (SCREENH - 1);
-    kx = (4 * 3.14159265358 - 0) / (SCREENW - 1);
-    for (i = 0, x = 0; i < SCREENW; i++, x += dx) {
-        screen[i].x = (int)(round((x + 2 * 3.14159265358) / kx));
-        screen[i].y = SCREENH - (int)(round((f[i] - ymin) / ky)) - 1;
-    }
+    kx = (xmax - xmin) / (SCREENW - 1);
+
 */
