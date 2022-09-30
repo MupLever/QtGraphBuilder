@@ -42,6 +42,26 @@ int is_number(char sym) {
     return result;
 }
 
+double get_number(char* str, int *index) {
+    int num = 0, length = strlen(str);
+    double result = 0;
+    while ((num = str_to_int(str[*index])) != -1 && *index < length) {
+        result = result * 10 + num;
+        *index = *index + 1;
+    }
+    if (*index < length && str[*index] == '.') {
+        *index = *index + 1;
+        double q_part = 0, k = 10.0;
+        while ((num = str_to_int(str[*index])) != -1 && *index < length) {
+            q_part = q_part + num / k;
+            k *= 10.0;
+            *index = *index + 1;
+        }
+        result += q_part;
+    }
+
+    return result;
+}
 int  is_operation_for_transform(char c) {
     const char opertations[] = {'*', '/', '+', '-', '~', '(', ')', 'x', '.'};
     bool flag = 0;
@@ -80,26 +100,6 @@ int is_operation_for_parse(char c) {
     return flag;
 }
 
-double get_number(char* str, int *index) {
-    int num = 0, length = strlen(str);
-    double result = 0;
-    while ((num = str_to_int(str[*index])) != -1 && *index < length) {
-        result = result * 10 + num;
-        *index = *index + 1;
-    }
-    if (*index < length && str[*index] == '.') {
-        *index = *index + 1;
-        double q_part = 0, k = 10.0;
-        while ((num = str_to_int(str[*index])) != -1 && *index < length) {
-            q_part = q_part + num / k;
-            k *= 10.0;
-            *index = *index + 1;
-        }
-        result += q_part;
-    }
-
-    return result;
-}
 int valid_str(char* str) {
     int length = strlen(str), i = 0, count = 0;
     while (i < length) {

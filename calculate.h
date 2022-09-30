@@ -7,5 +7,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+struct Point {
+    int x;
+    int y;
+};
+
 double calculate(Deque* tail, double x);
 #endif  // SRC_CALCULATE_H_

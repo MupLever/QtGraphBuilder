@@ -26,25 +26,6 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-//bool MainWindow::FileExists(FILE* f_param) {
-//    bool flag = true;
-//    if(!f_param) {
-//        flag = false;
-//    }
-//    return flag;
-//}
-
-bool MainWindow::FileEmpty(FILE* f_param) {
-    bool flag = true;
-    fseek(f_param, 0, SEEK_END);
-    long pos = ftell(f_param);
-    if (pos > 0 ) {
-        rewind(f_param);
-        flag = false;
-    }
-    return flag;
-}
-
 void MainWindow::SetStr() {
     string std_str = ui->lineEdit->text().toStdString();
     int len = (int)std_str.length();
@@ -52,45 +33,6 @@ void MainWindow::SetStr() {
         str[i] = std_str[i];
     str[len] = '\0';
     trim(str);
-
-}
-void MainWindow::WriteFile(char *func) {
-    if (!(f_logs = fopen("./logs", "rb+")) || FileEmpty(f_logs)) {
-        f_logs = fopen("./logs", "wb");
-        rewind(f_logs);
-    } else {
-        f_logs = fopen("./logs", "a+b");
-        fseek(f_logs, 0, SEEK_END);
-    }
-    time_t now = time(0);
-    tm *ltm = localtime(&now);
-    char buffer[20];
-    strftime(buffer, 20, "[%d.%m.%y %H:%M:%S]", ltm);
-    strcpy(record.func, func);
-    strcpy(record.date, buffer);
-    fwrite(&record, sizeof(Record), 1, f_logs);
-    fclose(f_logs);
-}
-
-Record MainWindow::ReadRecordFromFile(FILE *pfile, int index) {
-    int offset = index * sizeof(Record);
-    fseek(pfile, offset, SEEK_SET);
-    Record l_record;
-    fread(&l_record, sizeof(Record), 1, pfile);
-    rewind(pfile);
-    return l_record;
-}
-
-int MainWindow::GetFileSizeInBytes(FILE *pfile) {
-    int size = 0;
-    fseek(pfile, 0, SEEK_END);
-    size = ftell(pfile);
-    rewind(pfile);
-    return size;
-}
-
-int MainWindow::GetRecordsCountInFile(FILE *pfile) {
-    return GetFileSizeInBytes(pfile) / sizeof(Record);
 }
 
 void MainWindow::PlotGraph(char *str) {
@@ -168,8 +110,8 @@ void MainWindow::on_pushButton_clicked() {
                            QMessageBox::Ok);
         msgBox.exec();
     } else {
-        WriteFile(stroka);
-        ui->lineEdit->setEnabled(false);
+        WriteFile(f_logs, stroka);
+        ui->lineEdit->setReadOnly(false);
         ui->pushButton->setEnabled(false);
         ui->checkBox->setEnabled(true);
         ui->pushButton_2->setEnabled(true);
@@ -190,9 +132,8 @@ void MainWindow::on_pushButton_clicked() {
 void MainWindow::on_pushButton_2_clicked() {
     scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
     str[0] = '\0';
-    ui->graphicsView->repaint();
     ui->checkBox->setEnabled(false);
-    ui->lineEdit->setEnabled(true);
+    ui->lineEdit->setReadOnly(true);
     ui->pushButton->setEnabled(true);
     ui->pushButton_2->setEnabled(false);
     ui->pushButton_3->setEnabled(false);
@@ -255,6 +196,9 @@ void MainWindow::on_pushButton_8_clicked() {
 }
 
 void MainWindow::on_pushButton_9_clicked() {
+    SecondWindow second_window;
+    second_window.setModal(true);
+    second_window.exec();
     Record l_record;
     if ((f_logs = fopen("./logs", "r+b")) != NULL && !FileEmpty(f_logs)) {
         int count = GetRecordsCountInFile(f_logs);
@@ -292,3 +236,21 @@ void MainWindow::on_checkBox_stateChanged(int arg1) {
     kx = (xmax - xmin) / (SCREENW - 1);
 
 */
+
+void MainWindow::on_pushButton_12_clicked() {
+    TableOfValues window;
+    window.setModal(true);
+    window.exec();
+}
+
+void MainWindow::on_pushButton_11_clicked() {
+    CompareWindow window;
+    window.setModal(true);
+    window.exec();
+}
+
+void MainWindow::on_pushButton_13_clicked() {
+    IntegralWindow window;
+    window.setModal(true);
+    window.exec();
+}

@@ -4,6 +4,11 @@
 #include "calculate.h"
 #include "deque.h"
 #include "stack.h"
+#include "fileworker.h"
+#include "secondwindow.h"
+#include "comparewindow.h"
+#include "tableofvalues.h"
+#include "integralwindow.h"
 #include <QMainWindow>
 #include <QString>
 #include <QGraphicsScene>
@@ -21,16 +26,6 @@ using namespace std;
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-struct Point {
-    int x;
-    int y;
-};
-
-struct Record {
-    char func[50];
-    char date[20];
-};
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -42,16 +37,6 @@ private:
     void PlotGraph(char *str);
 
     void SetStr();
-
-    int GetFileSizeInBytes(FILE *pfile);
-
-    int GetRecordsCountInFile(FILE *pfile);
-
-    Record ReadRecordFromFile(FILE *pfile, int index);
-
-    void WriteFile(char *func);
-
-    bool FileEmpty(FILE* f_param);
 
 private slots:
     void on_pushButton_clicked();
@@ -76,6 +61,12 @@ private slots:
 
     void on_checkBox_stateChanged(int arg1);
 
+    void on_pushButton_12_clicked();
+
+    void on_pushButton_11_clicked();
+
+    void on_pushButton_13_clicked();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
@@ -83,7 +74,6 @@ private:
     QPen pen;
     char str[50];
     Point screen[SCREENW];
-    Record record;
     double f[SCREENW], xmin = -10.0, xmax = 10.0, ymin = -10.0, ymax = 10.0;
     FILE* f_logs;
 };

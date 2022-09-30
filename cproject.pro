@@ -17,21 +17,35 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     calculate.cpp \
+    comparewindow.cpp \
     deque.cpp \
+    fileworker.cpp \
+    integralwindow.cpp \
     main.cpp \
     mainwindow.cpp \
     parse_str.cpp \
-    stack.cpp
+    secondwindow.cpp \
+    stack.cpp \
+    tableofvalues.cpp
 
 HEADERS += \
     calculate.h \
+    comparewindow.h \
     deque.h \
+    fileworker.h \
+    integralwindow.h \
     mainwindow.h \
     parse_str.h \
-    stack.h
+    secondwindow.h \
+    stack.h \
+    tableofvalues.h
 
 FORMS += \
-    mainwindow.ui
+    comparewindow.ui \
+    integralwindow.ui \
+    mainwindow.ui \
+    secondwindow.ui \
+    tableofvalues.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

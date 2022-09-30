@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>902</width>
-    <height>593</height>
+    <width>955</width>
+    <height>638</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -56,6 +56,31 @@
         </spacer>
        </item>
        <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QPushButton" name="pushButton_12">
+           <property name="text">
+            <string>Таблица значений</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_11">
+           <property name="text">
+            <string>Сравнение</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_13">
+           <property name="text">
+            <string>Интеграл</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <widget class="QLineEdit" name="lineEdit">
@@ -66,14 +91,14 @@
             <number>49</number>
            </property>
            <property name="placeholderText">
-            <string>Enter the function. Example: x*x*cos(x)</string>
+            <string>Введите функцию. Пример: x*x*cos(x)</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QCheckBox" name="checkBox">
            <property name="text">
-            <string>scaling</string>
+            <string>Масштаб</string>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -90,7 +115,7 @@
          <item row="0" column="1">
           <widget class="QPushButton" name="pushButton_2">
            <property name="text">
-            <string>Clean</string>
+            <string>Очистить</string>
            </property>
           </widget>
          </item>
@@ -111,21 +136,21 @@
          <item row="2" column="0" colspan="2">
           <widget class="QPushButton" name="pushButton_9">
            <property name="text">
-            <string>Hiistory</string>
+            <string>История функций</string>
            </property>
           </widget>
          </item>
          <item row="0" column="0">
           <widget class="QPushButton" name="pushButton">
            <property name="text">
-            <string>Build</string>
+            <string>Построить</string>
            </property>
           </widget>
          </item>
          <item row="9" column="0" colspan="2">
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>                                      Control buttons</string>
+            <string>                                      Кнопки управления</string>
            </property>
           </widget>
          </item>
@@ -217,7 +242,7 @@
          <item>
           <widget class="QPushButton" name="pushButton_10">
            <property name="text">
-            <string>Exit</string>
+            <string>Выход</string>
            </property>
           </widget>
          </item>
@@ -246,7 +271,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>902</width>
+     <width>955</width>
      <height>30</height>
     </rect>
    </property>
