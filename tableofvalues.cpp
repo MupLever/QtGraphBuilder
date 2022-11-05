@@ -18,45 +18,67 @@ void TableOfValues::on_pushButton_2_clicked() {
     close();
 }
 void TableOfValues::SetStr() {
+    int i;
     std::string std_str = ui->lineEdit_3->text().toStdString();
+    std::string std_str_lg = ui->lineEdit->text().toStdString();
+    std::string std_str_rg = ui->lineEdit_2->text().toStdString();
     int len = (int)std_str.length();
-    for (int i = 0; i < len; i++)
+    for (i = 0; i < len; i++)
         str[i] = std_str[i];
     str[len] = '\0';
-    trim(str);
 
+    int len_lg = (int)std_str_lg.length();
+    for (i = 0; i < len_lg; i++)
+        str_lg[i] = std_str_lg[i];
+    str_lg[len_lg] = '\0';
+
+    int len_rg = (int)std_str_rg.length();
+    for (i = 0; i < len_rg; i++)
+        str_rg[i] = std_str_rg[i];
+    str_rg[len_rg] = '\0';
+    trim(str);
 }
 void TableOfValues::on_pushButton_clicked() {
     SetStr();
+    int i;
     bool flag = 0;
     transform(str, &flag);
-    if (valid_str(str) != 0 || flag || strlen(str) == 0) {
+    if (isStrToFloat(str_lg) && isStrToFloat(str_rg)) {
+        sscanf(str_lg, "%lf", &xmin);
+        sscanf(str_rg, "%lf", &xmax);
+        if (valid_str(str) != 0 || flag || strlen(str) == 0 || xmin >= xmax) {
+            QMessageBox msgBox(QMessageBox::Information,
+                               "GROW", "Invalid expression entered or incorrect range.",
+                               QMessageBox::Ok);
+            msgBox.exec();
+        } else {
+            ui->lineEdit->setReadOnly(true);
+            ui->lineEdit_2->setReadOnly(true);
+            ui->lineEdit_3->setReadOnly(true);
+            double dx = (xmax - xmin) / 19, x;
+            model = new QStandardItemModel(10, 2, this);
+            ui->tableView->setModel(model);
+            model->setHeaderData(0, Qt::Horizontal, "X");
+            model->setHeaderData(1, Qt::Horizontal, "Y");
+            model->setRowCount(20);
+            ui->tableView->setEditTriggers(QTableView::NoEditTriggers);
+            ui->tableView->setColumnWidth(0, 115);
+            ui->tableView->setColumnWidth(1, 115);
+            QModelIndex index;
+            for (i = 0, x = xmin; i < 20; ++i, x += dx) {
+                index = model->index(i, 0);
+                model->setData(index, x);
+                index = model->index(i, 1);
+                head = parse(str);
+                tail = get_tail(head);
+                model->setData(index, calculate(tail, x));
+            }
+        }
+    } else {
         QMessageBox msgBox(QMessageBox::Information,
-                           "GROW", "Invalid expression entered.",
+                           "GROW", "Incorrect range.",
                            QMessageBox::Ok);
         msgBox.exec();
-    } else {
-        ui->lineEdit->setReadOnly(true);
-        ui->lineEdit_2->setReadOnly(true);
-        ui->lineEdit_3->setReadOnly(true);
-        double xmin = -10.0, xmax = 10.0, dx = (xmax - xmin) / 20;
-        model = new QStandardItemModel(10, 2, this);
-        ui->tableView->setModel(model);
-        model->setHeaderData(0, Qt::Horizontal, "X");
-        model->setHeaderData(1, Qt::Horizontal, "Y");
-        model->setRowCount(20);
-        ui->tableView->setEditTriggers(QTableView::NoEditTriggers);
-        ui->tableView->setColumnWidth(0, 140);
-        ui->tableView->setColumnWidth(1, 230);
-        QModelIndex index;
-        for (int i = 0, x = xmin; i < 20; ++i, x += dx) {
-            index = model->index(i, 0);
-            model->setData(index, x);
-            index = model->index(i, 1);
-            head = parse(str);
-            tail = get_tail(head);
-            model->setData(index, calculate(tail, x));
-        }
     }
 }
 

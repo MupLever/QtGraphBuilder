@@ -21,7 +21,7 @@ IntegralWindow::~IntegralWindow()
     delete ui;
 }
 void IntegralWindow::IntegralCalculate() {
-    double a = 0, b = 2, eps = 0.00001, s = 0, s1 = eps + 1, dx;
+    double eps = 0.00001, s = 0, s1 = eps + 1, dx;
     int n = 2;
     while (fabs(s1 - s) > eps) {
         n *= 2;
@@ -39,11 +39,24 @@ void IntegralWindow::IntegralCalculate() {
     ui->lineEdit_4->setText(QString::number(s));
 }
 void IntegralWindow::SetStr() {
+    int i;
     std::string std_str = ui->lineEdit->text().toStdString();
+    std::string std_str_lg = ui->lineEdit_2->text().toStdString();
+    std::string std_str_rg = ui->lineEdit_3->text().toStdString();
     int len = (int)std_str.length();
-    for (int i = 0; i < len; i++)
+    for (i = 0; i < len; i++)
         str[i] = std_str[i];
     str[len] = '\0';
+
+    int len_lg = (int)std_str_lg.length();
+    for (i = 0; i < len_lg; i++)
+        str_lg[i] = std_str_lg[i];
+    str_lg[len_lg] = '\0';
+
+    int len_rg = (int)std_str_rg.length();
+    for (i = 0; i < len_rg; i++)
+        str_rg[i] = std_str_rg[i];
+    str_rg[len_rg] = '\0';
     trim(str);
 }
 
@@ -74,8 +87,8 @@ void IntegralWindow::PlotGraph(char *str) {
             x0 = (int)(round((0 - xmin) / kx));
     QString str_value_point;
 
-    int border = (round((2 - xmin) / kx));
-    for (i = x0; i < border; ++i) {
+    int right_border = (round((b - xmin) / kx)), left_border = (round((a - xmin) / kx));
+    for (i = left_border; i < right_border; ++i) {
         scene->addRect(screen[i].x, y0, screen[i + 1].x - screen[i].x, screen[i].y - y0, QPen(Qt::green), QBrush(Qt::green));
     }
 
@@ -124,20 +137,29 @@ void IntegralWindow::on_pushButton_clicked() {
     bool flag = 0;
     SetStr();
     transform(str, &flag);
-    if (valid_str(str) != 0 || flag || strlen(str) == 0) {
+    if (isStrToFloat(str_lg) && isStrToFloat(str_rg)) {
+        sscanf(str_lg, "%lf", &a);
+        sscanf(str_rg, "%lf", &b);
+        if (valid_str(str) != 0 || flag || strlen(str) == 0 || a >= b) {
+            QMessageBox msgBox(QMessageBox::Information,
+                               "GROW", "Invalid expression entered or incorrect range.",
+                               QMessageBox::Ok);
+            msgBox.exec();
+        } else {
+            ui->lineEdit->setReadOnly(true);
+            ui->lineEdit_2->setReadOnly(true);
+            ui->lineEdit_3->setReadOnly(true);
+            ui->pushButton->setEnabled(false);
+    //        ui->checkBox->setEnabled(true);
+            ui->pushButton_2->setEnabled(true);
+            PlotGraph(str);
+            IntegralCalculate();
+        }
+    } else {
         QMessageBox msgBox(QMessageBox::Information,
-                           "GROW", "Invalid expression entered.",
+                           "GROW", "Incorrect range.",
                            QMessageBox::Ok);
         msgBox.exec();
-    } else {
-        ui->lineEdit->setReadOnly(true);
-        ui->lineEdit_2->setReadOnly(true);
-        ui->lineEdit_3->setReadOnly(true);
-        ui->pushButton->setEnabled(false);
-//        ui->checkBox->setEnabled(true);
-        ui->pushButton_2->setEnabled(true);
-        PlotGraph(str);
-        IntegralCalculate();
     }
 }
 

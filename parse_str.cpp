@@ -35,8 +35,8 @@ int str_to_int(char c) {
     return i;
 }
 
-int is_number(char sym) {
-    int result = 0;
+bool is_number(char sym) {
+    bool result = 0;
     if (sym >= '0' && sym <= '9')
         result = 1;
     return result;
@@ -59,10 +59,25 @@ double get_number(char* str, int *index) {
         }
         result += q_part;
     }
-
     return result;
 }
-int  is_operation_for_transform(char c) {
+
+short int isStrToFloat(char *str) {
+    int i = 0;
+    unsigned short int flag_point = 0;
+    if (str[i] == '-') i++;
+    for (; str[i] != 0; i++)
+        if (!(str[i] >= '0' && str[i] <= '9')) {
+            if (str[i] == '.' && !flag_point)
+                flag_point = 1;
+            else
+                return 0;
+        }
+    if (i == 1 && str[0] == '-') return 0;
+    return 1;
+}
+
+bool is_operation_for_transform(char c) {
     const char opertations[] = {'*', '/', '+', '-', '~', '(', ')', 'x', '.'};
     bool flag = 0;
     for (int i = 0; i < 9 && !flag; i++) {
@@ -72,7 +87,7 @@ int  is_operation_for_transform(char c) {
     return flag;
 }
 
-int is_binary_operator(char c) {
+bool is_binary_operator(char c) {
     const char opertations[] = {'*', '/', '+', '-'};
     bool flag = 0;
     for (int i = 0; i < 4 && !flag; i++) {
@@ -81,7 +96,7 @@ int is_binary_operator(char c) {
     }
     return flag;
 }
-int is_operator(char c) {
+bool is_operator(char c) {
     const char opertations[] = {'l', 't', 'c', 'C', 's', 'S'};
     bool flag = 0;
     for (int i = 0; i < 6 && !flag; i++) {
@@ -90,7 +105,7 @@ int is_operator(char c) {
     }
     return flag;
 }
-int is_operation_for_parse(char c) {
+bool is_operation_for_parse(char c) {
     const char opertations[] = {'*', '/', '+', '-', '~', '(', 'l', 't', 'c', 'C', 's', 'S', '.'};
     bool flag = 0;
     for (int i = 0; i < 13 && !flag; i++) {
@@ -100,7 +115,7 @@ int is_operation_for_parse(char c) {
     return flag;
 }
 
-int valid_str(char* str) {
+bool valid_str(char* str) {
     int length = strlen(str), i = 0, count = 0;
     while (i < length) {
         if (str[i] == '(')
@@ -156,9 +171,9 @@ char* transform(char* str, bool *flag) {
     str[length + 1] = '\0';
     return str;
 }
-int cmp_priority(char sym1, char sym2) {
+bool cmp_priority(char sym1, char sym2) {
     const int matrix[2][6] = {{'(', '+', '-', '/', '*', '~'}, {'0', '1', '1', '2', '2', '3'}};
-    int result = 0;
+    bool result = 0;
     for (int i = 0; i < 6; i++) {
         if (sym1 == matrix[0][i])
             sym1 = matrix[1][i];
@@ -171,9 +186,9 @@ int cmp_priority(char sym1, char sym2) {
 }
 Deque* parse(char* str) {
     Node data;
+    data.num = 0;
     Stack* operations = NULL;
     Deque* head = NULL;
-    data.num = 0;
     int length = strlen(str), i = 0;
     bool flag_error = 0;
     while (i < length && !flag_error) {

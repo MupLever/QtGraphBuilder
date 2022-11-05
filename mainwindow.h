@@ -11,6 +11,7 @@
 #include "integralwindow.h"
 #include <QMainWindow>
 #include <QString>
+#include <QList>
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
 #include <QMessageBox>
@@ -35,7 +36,7 @@ public:
     ~MainWindow();
 private:
     void PlotGraph(char *str);
-
+    void PlotGraphAxis(double x0, double y0);
     void SetStr();
 
 private slots:

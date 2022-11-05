@@ -32,8 +32,9 @@ private:
     void SetStr();
     Ui::TableOfValues *ui;
     QStandardItemModel *model;
-    char str[50];
+    char str[50], str_lg[10], str_rg[10];
     Deque *head, *tail;
+    double xmin = -10.0, xmax = 10.0;
 };
 
 #endif // TABLEOFVALUES_H

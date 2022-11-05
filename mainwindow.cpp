@@ -34,33 +34,10 @@ void MainWindow::SetStr() {
     str[len] = '\0';
     trim(str);
 }
-
-void MainWindow::PlotGraph(char *str) {
-    double x, ky, kx = (xmax - xmin) / (SCREENW - 1);
-    int i;
-    bool check = ui->checkBox->checkState();
-    for (i = 0, x = xmin; i < SCREENW; ++i, x += kx) {
-        head = parse(str);
-        tail = get_tail(head);
-        f[i] = calculate(tail, x);
-    }
-    if (check) {
-        ymax = ymin = f[0];
-        for (i = 1; i < SCREENW; ++i){
-            if (ymax < f[i])
-                ymax = f[i];
-            if (ymin > f[i])
-                ymin = f[i];
-        }
-    }
-    ky = (ymax - ymin) / (SCREENH - 1);
-    for (i = 0, x = xmin; i < SCREENW; i++, x += kx) {
-        screen[i].x = (round((x - xmin) / kx)) + 250;
-        screen[i].y = SCREENH - (round((f[i] - ymin) / ky)) - 1;
-    }
-    double y0 = SCREENH - (int)(round((0 - ymin) / ky)) - 1,
-            x0 = (int)(round((0 - xmin) / kx));
+void MainWindow::PlotGraphAxis(double x0, double y0) {
     QString str_value_point;
+    int i = 0;
+    double x;
     if (y0 >= 10 && y0 <= 495) {
         scene->addLine(250, y0, 750, y0, QPen(Qt::black));
         double dx = (xmax - xmin) / 20;
@@ -89,6 +66,33 @@ void MainWindow::PlotGraph(char *str) {
             }
         }
     }
+}
+void MainWindow::PlotGraph(char *str) {
+    double x, ky, kx = (xmax - xmin) / (SCREENW - 1);
+    int i;
+    bool check = ui->checkBox->checkState();
+    for (i = 0, x = xmin; i < SCREENW; ++i, x += kx) {
+        head = parse(str);
+        tail = get_tail(head);
+        f[i] = calculate(tail, x);
+    }
+    if (check) {
+        ymax = ymin = f[0];
+        for (i = 1; i < SCREENW; ++i){
+            if (ymax < f[i])
+                ymax = f[i];
+            if (ymin > f[i])
+                ymin = f[i];
+        }
+    }
+    ky = (ymax - ymin) / (SCREENH - 1);
+    for (i = 0, x = xmin; i < SCREENW; i++, x += kx) {
+        screen[i].x = (round((x - xmin) / kx)) + 250;
+        screen[i].y = SCREENH - (round((f[i] - ymin) / ky)) - 1;
+    }
+    double y0 = SCREENH - (int)(round((0 - ymin) / ky)) - 1,
+            x0 = (int)(round((0 - xmin) / kx));
+   PlotGraphAxis(x0, y0);
     for (i = 0; i < SCREENW - 1; ++i) {
         if (screen[i].y >= 0 && screen[i].y <= 500
                 && screen[i + 1].y >= 0 && screen[i + 1].y <= 500
@@ -111,7 +115,7 @@ void MainWindow::on_pushButton_clicked() {
         msgBox.exec();
     } else {
         WriteFile(f_logs, stroka);
-        ui->lineEdit->setReadOnly(false);
+        ui->lineEdit->setReadOnly(true);
         ui->pushButton->setEnabled(false);
         ui->checkBox->setEnabled(true);
         ui->pushButton_2->setEnabled(true);
@@ -121,19 +125,20 @@ void MainWindow::on_pushButton_clicked() {
         ui->pushButton_6->setEnabled(true);
         ui->pushButton_7->setEnabled(true);
         ui->pushButton_8->setEnabled(true);
-        clock_t time_start = clock();
+        //clock_t time_start = clock();
         PlotGraph(str);
-        clock_t time_end = clock();
-        double time_dif = (double)(time_end - time_start) / CLOCKS_PER_SEC;
-        printf("%lf\n", time_dif);
+        //clock_t time_end = clock();
+        //double time_dif = (double)(time_end - time_start) / CLOCKS_PER_SEC;
+        //printf("%lf\n", time_dif);
     }
 }
 
 void MainWindow::on_pushButton_2_clicked() {
+    scene->clear();
     scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
     str[0] = '\0';
     ui->checkBox->setEnabled(false);
-    ui->lineEdit->setReadOnly(true);
+    ui->lineEdit->setReadOnly(false);
     ui->pushButton->setEnabled(true);
     ui->pushButton_2->setEnabled(false);
     ui->pushButton_3->setEnabled(false);
@@ -146,6 +151,7 @@ void MainWindow::on_pushButton_2_clicked() {
 }
 
 void MainWindow::on_pushButton_3_clicked() {
+    scene->clear();
     scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
     xmin -= 1;
     xmax -= 1;
@@ -153,6 +159,7 @@ void MainWindow::on_pushButton_3_clicked() {
 }
 
 void MainWindow::on_pushButton_4_clicked() {
+    scene->clear();
     scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
     xmin += 1;
     xmax += 1;
@@ -160,6 +167,7 @@ void MainWindow::on_pushButton_4_clicked() {
 }
 
 void MainWindow::on_pushButton_5_clicked() {
+    scene->clear();
     scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
     ymin += 1;
     ymax += 1;
@@ -167,6 +175,7 @@ void MainWindow::on_pushButton_5_clicked() {
 }
 
 void MainWindow::on_pushButton_6_clicked() {
+    scene->clear();
     scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
     ymin -= 1;
     ymax -= 1;
@@ -174,6 +183,7 @@ void MainWindow::on_pushButton_6_clicked() {
 }
 
 void MainWindow::on_pushButton_7_clicked(){
+    scene->clear();
     scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
     if (ymax - ymin > 10) {
         ymin += 1;
@@ -187,6 +197,7 @@ void MainWindow::on_pushButton_7_clicked(){
 }
 
 void MainWindow::on_pushButton_8_clicked() {
+    scene->clear();
     scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
     ymin -= 1;
     ymax += 1;
@@ -215,6 +226,7 @@ void MainWindow::on_pushButton_10_clicked() {
 
 void MainWindow::on_checkBox_stateChanged(int arg1) {
     if (ui->lineEdit->text().length() != 0) {
+        scene->clear();
         scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
         ymax = 10;
         ymin = -10;
