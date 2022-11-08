@@ -38,7 +38,7 @@ private:
     QGraphicsScene *scene;
     Deque *head, *tail;
     QPen pen;
-    char str[50], str_lg[50], str_rg[50];
+    char str[50], str_lg[10], str_rg[10];
     Point screen[SCREENW];
     double f[SCREENW], xmin = -10.0, xmax = 10.0, ymin = -10.0, ymax = 10.0, a, b;
 };

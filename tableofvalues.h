@@ -9,6 +9,7 @@
 #include <QTableView>
 #include <QStandardItemModel>
 #include <QMessageBox>
+#include <iostream>
 namespace Ui {
 class TableOfValues;
 }

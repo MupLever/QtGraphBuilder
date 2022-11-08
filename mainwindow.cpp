@@ -18,7 +18,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setScene(scene);
     pen.setColor(Qt::red);
     pen.setWidth(2);
+    setFixedSize(QSize(950,550));
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
+
 }
 
 MainWindow::~MainWindow() {

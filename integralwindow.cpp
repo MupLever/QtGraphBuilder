@@ -14,6 +14,7 @@ IntegralWindow::IntegralWindow(QWidget *parent) :
     pen.setColor(Qt::red);
     pen.setWidth(2);
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
+    setFixedSize(QSize(750,550));
 }
 
 IntegralWindow::~IntegralWindow()
@@ -44,17 +45,17 @@ void IntegralWindow::SetStr() {
     std::string std_str_lg = ui->lineEdit_2->text().toStdString();
     std::string std_str_rg = ui->lineEdit_3->text().toStdString();
     int len = (int)std_str.length();
-    for (i = 0; i < len; i++)
+    for (i = 0; i < len; ++i)
         str[i] = std_str[i];
     str[len] = '\0';
 
     int len_lg = (int)std_str_lg.length();
-    for (i = 0; i < len_lg; i++)
+    for (i = 0; i < len_lg; ++i)
         str_lg[i] = std_str_lg[i];
     str_lg[len_lg] = '\0';
 
     int len_rg = (int)std_str_rg.length();
-    for (i = 0; i < len_rg; i++)
+    for (i = 0; i < len_rg; ++i)
         str_rg[i] = std_str_rg[i];
     str_rg[len_rg] = '\0';
     trim(str);
@@ -137,10 +138,17 @@ void IntegralWindow::on_pushButton_clicked() {
     bool flag = 0;
     SetStr();
     transform(str, &flag);
-    if (isStrToFloat(str_lg) && isStrToFloat(str_rg)) {
-        sscanf(str_lg, "%lf", &a);
-        sscanf(str_rg, "%lf", &b);
-        if (valid_str(str) != 0 || flag || strlen(str) == 0 || a >= b) {
+    if (is_str_to_float(str_lg) && is_str_to_float(str_rg)) {
+        int i = 0;
+        a = get_number(str_lg, &i);
+        i = 0;
+        b = get_number(str_rg, &i);
+        if (valid_str(str) != 0 ||
+            flag ||
+            strlen(str) == 0 ||
+            a >= b ||
+            strlen(str_lg) == 0 ||
+            strlen(str_rg) == 0) {
             QMessageBox msgBox(QMessageBox::Information,
                                "GROW", "Invalid expression entered or incorrect range.",
                                QMessageBox::Ok);
