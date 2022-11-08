@@ -19,6 +19,7 @@ CompareWindow::CompareWindow(QWidget *parent) :
     pen3.setColor(Qt::black);
     pen3.setWidth(2);
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
+    setFixedSize(QSize(820,580));
 }
 
 CompareWindow::~CompareWindow()

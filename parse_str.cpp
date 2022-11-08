@@ -6,16 +6,16 @@ char *trim(char *str) {
         for (i = 0; i < length; i++) {
             str[i] = str[i + 1];
         }
-        length--;
+        --length;
     }
     while (i < length) {
         if (str[i] == ' ') {
             for (int j = i; j < length; j++) {
                 str[j] = str[j + 1];
             }
-            length--;
+            --length;
         }
-        i++;
+        ++i;
     }
     str[length] = '\0';
     return str;
@@ -29,7 +29,7 @@ int str_to_int(char c) {
             flag = 1;
         }
     }
-    i--;
+    --i;
     if (flag == 0)
         i = -1;
     return i;
@@ -45,6 +45,11 @@ bool is_number(char sym) {
 double get_number(char* str, int *index) {
     int num = 0, length = strlen(str);
     double result = 0;
+    bool flag_negative = false;
+    if (str[0] == '-') {
+        *index = *index + 1;
+        flag_negative = true;
+    }
     while ((num = str_to_int(str[*index])) != -1 && *index < length) {
         result = result * 10 + num;
         *index = *index + 1;
@@ -59,10 +64,12 @@ double get_number(char* str, int *index) {
         }
         result += q_part;
     }
+    if (flag_negative)
+        result *= -1;
     return result;
 }
 
-short int isStrToFloat(char *str) {
+short int is_str_to_float(const std::string str) {
     int i = 0;
     unsigned short int flag_point = 0;
     if (str[i] == '-') i++;
@@ -122,7 +129,7 @@ bool valid_str(char* str) {
             count++;
         if (str[i] == ')')
             count--;
-        i++;
+        ++i;
     }
     return count;
 }
@@ -131,7 +138,7 @@ char* transform(char* str, bool *flag) {
     bool flag_num_op = 0, flag_un_op = 0;
     while (i < length && *flag == 0) {
         while (is_operation_for_transform(str[i]) || is_number(str[i])) {
-            i++;
+            ++i;
             flag_num_op = 1;
         }
         if (!flag_num_op && str[i] == 's' && str[i + 1] == 'q' && str[i + 2] == 'r' && str[i + 3] == 't') {
@@ -140,7 +147,7 @@ char* transform(char* str, bool *flag) {
                 str[j] = str[j + 3];
             }
             length -= 3;
-            i++;
+            ++i;
             flag_un_op = 1;
         }
         if (!flag_num_op && ((str[i] == 'c' && str[i + 1] == 'o' && str[i + 2] == 's')
@@ -152,7 +159,7 @@ char* transform(char* str, bool *flag) {
                 str[j] = str[j + 2];
             }
             length -= 2;
-            i++;
+            ++i;
             flag_un_op = 1;
         }
         if (!flag_num_op && ((str[i] == 't' && str[i + 1] == 'g') || (str[i] == 'l' && str[i + 1] == 'n'))) {
@@ -160,7 +167,7 @@ char* transform(char* str, bool *flag) {
                 str[j] = str[j + 1];
             }
             length -= 1;
-            i++;
+            ++i;
             flag_un_op = 1;
         }
         if (flag_num_op == 0 && flag_un_op == 0)
@@ -229,7 +236,7 @@ Deque* parse(char* str) {
                 head = push(head, &data);
                 operations = pop_front(operations);
             }
-            i++;
+            ++i;
             data.sym = ' ';
         }
         if (i >= length) {

@@ -9,11 +9,12 @@ SecondWindow::SecondWindow(QWidget *parent) :
     setWindowTitle("GROW");
     model = new QStandardItemModel(10, 2, this);
     ui->tableView->setModel(model);
-    model->setHeaderData(0, Qt::Horizontal, "Date");
-    model->setHeaderData(1, Qt::Horizontal, "Function");
+    model->setHeaderData(0, Qt::Horizontal, "Дата");
+    model->setHeaderData(1, Qt::Horizontal, "Функция");
     ui->tableView->setEditTriggers(QTableView::NoEditTriggers);
     ui->tableView->setColumnWidth(0, 140);
     ui->tableView->setColumnWidth(1, 230);
+    setFixedSize(QSize(450,450));
     Record record;
     QModelIndex index;
     FILE *f_logs;

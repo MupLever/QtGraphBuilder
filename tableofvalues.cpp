@@ -7,10 +7,10 @@ TableOfValues::TableOfValues(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("GROW");
+    setFixedSize(QSize(600,400));
 }
 
-TableOfValues::~TableOfValues()
-{
+TableOfValues::~TableOfValues() {
     delete ui;
 }
 
@@ -40,13 +40,20 @@ void TableOfValues::SetStr() {
 }
 void TableOfValues::on_pushButton_clicked() {
     SetStr();
-    int i;
     bool flag = 0;
     transform(str, &flag);
-    if (isStrToFloat(str_lg) && isStrToFloat(str_rg)) {
-        sscanf(str_lg, "%lf", &xmin);
-        sscanf(str_rg, "%lf", &xmax);
-        if (valid_str(str) != 0 || flag || strlen(str) == 0 || xmin >= xmax) {
+    if (is_str_to_float(str_lg) && is_str_to_float(str_rg)) {
+        int i = 0;
+        xmin = get_number(str_lg, &i);
+        i = 0;
+        xmax = get_number(str_rg, &i);
+        std::cout << xmin << " " << xmax << std::endl;
+        if (valid_str(str) != 0 ||
+            flag ||
+            strlen(str) == 0 ||
+            xmin >= xmax  ||
+            strlen(str_lg) == 0 ||
+            strlen(str_rg) == 0) {
             QMessageBox msgBox(QMessageBox::Information,
                                "GROW", "Invalid expression entered or incorrect range.",
                                QMessageBox::Ok);
@@ -58,12 +65,12 @@ void TableOfValues::on_pushButton_clicked() {
             double dx = (xmax - xmin) / 19, x;
             model = new QStandardItemModel(10, 2, this);
             ui->tableView->setModel(model);
-            model->setHeaderData(0, Qt::Horizontal, "X");
-            model->setHeaderData(1, Qt::Horizontal, "Y");
-            model->setRowCount(20);
             ui->tableView->setEditTriggers(QTableView::NoEditTriggers);
             ui->tableView->setColumnWidth(0, 115);
             ui->tableView->setColumnWidth(1, 115);
+            model->setHeaderData(0, Qt::Horizontal, "X");
+            model->setHeaderData(1, Qt::Horizontal, "Y");
+            model->setRowCount(20);
             QModelIndex index;
             for (i = 0, x = xmin; i < 20; ++i, x += dx) {
                 index = model->index(i, 0);
@@ -83,10 +90,13 @@ void TableOfValues::on_pushButton_clicked() {
 }
 
 void TableOfValues::on_pushButton_3_clicked() {
+    model = new QStandardItemModel(10, 2, this);
+    ui->tableView->setModel(model);
     ui->lineEdit->setReadOnly(false);
     ui->lineEdit_2->setReadOnly(false);
     ui->lineEdit_3->setReadOnly(false);
     ui->lineEdit->setText("");
     ui->lineEdit_2->setText("");
     ui->lineEdit_3->setText("");
+    delete model;
 }

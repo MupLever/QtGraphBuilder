@@ -6,12 +6,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <iostream>
 char *trim(char *str);
 bool valid_str(char* str);
 int str_to_int(char c);
 bool is_number(char sym);
-short int isStrToFloat(char *str);
+short int is_str_to_float(const std::string str);
 double get_number(char* str, int *index);
 bool is_operator(char c);
 bool is_binary_operator(char c);
