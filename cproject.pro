@@ -19,6 +19,7 @@ SOURCES += \
     calculate.cpp \
     comparewindow.cpp \
     deque.cpp \
+    derivativewindow.cpp \
     fileworker.cpp \
     integralwindow.cpp \
     main.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     calculate.h \
     comparewindow.h \
     deque.h \
+    derivativewindow.h \
     fileworker.h \
     integralwindow.h \
     mainwindow.h \
@@ -42,6 +44,7 @@ HEADERS += \
 
 FORMS += \
     comparewindow.ui \
+    derivativewindow.ui \
     integralwindow.ui \
     mainwindow.ui \
     secondwindow.ui \

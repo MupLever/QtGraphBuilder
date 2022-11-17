@@ -8,9 +8,12 @@
 #include <stdlib.h>
 
 struct Point {
-    int x;
-    int y;
+    double x;
+    double y;
+    bool flag_scope_definition = false;
+    bool flag_division_by_zero = false;
+    bool flag_sign = false;
 };
 
-double calculate(Deque* tail, double x);
+Point calculate(Deque* tail, double x);
 #endif  // SRC_CALCULATE_H_

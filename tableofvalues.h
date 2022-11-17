@@ -29,13 +29,23 @@ private slots:
 
     void on_pushButton_3_clicked();
 
+    void on_checkBox_stateChanged(int arg1);
+
+    void on_radioButton_clicked();
+
+    void on_radioButton_2_clicked();
+
 private:
-    void SetStr();
+    void calculateTable(int count, bool options);
+    void clearWindow();
+    void SetAtributes();
     Ui::TableOfValues *ui;
     QStandardItemModel *model;
-    char str[50], str_lg[10], str_rg[10];
+    char str[50];
+    bool ok_lg = false, ok_rg = false, ok_count = false, radioButtonChecked_1 = false, radioButtonChecked_2 = false;
     Deque *head, *tail;
     double xmin = -10.0, xmax = 10.0;
+    int count = 20;
 };
 
 #endif // TABLEOFVALUES_H

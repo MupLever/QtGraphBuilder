@@ -32,15 +32,17 @@ private slots:
 
 private:
     void PlotGraph(char *str);
-    void IntegralCalculate();
+    void PlotGraphAxis(double x0, double y0);
+    double IntegralCalculate(bool *flag);
     void SetStr();
     Ui::IntegralWindow *ui;
     QGraphicsScene *scene;
     Deque *head, *tail;
     QPen pen;
-    char str[50], str_lg[10], str_rg[10];
-    Point screen[SCREENW];
-    double f[SCREENW], xmin = -10.0, xmax = 10.0, ymin = -10.0, ymax = 10.0, a, b;
+    char str[50];
+    bool ok_lg = false, ok_rg = false;
+    Point points[SCREENW];
+    double xmin = -10.0, xmax = 10.0, ymin = -10.0, ymax = 10.0, a, b;
 };
 
 #endif // INTEGRALWINDOW_H
