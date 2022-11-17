@@ -34,15 +34,25 @@ private slots:
 
 private:
     Ui::CompareWindow *ui;
-    char str_func1[50];
-    char str_func2[50];
+
+    char str_func1[50], str_func2[50];
+
     QGraphicsScene *scene;
+
     Deque *head1, *tail1, *head2, *tail2;
+
     QPen pen1, pen2, pen3;
+
     Point screen_func1[SCREENW], screen_func2[SCREENW];
-    double f1[SCREENW], f2[SCREENW], xmin = -10.0, xmax = 10.0, ymin = -10.0, ymax = 10.0;
+
+    double xmin = -10.0, xmax = 10.0, ymin = -10.0, ymax = 10.0;
+
+    bool ok_lg = false, ok_rg = false;
+
     void SetStr();
+    QPen pen;
     void PlotGraph();
+    void PlotGraphAxis(double x0, double y0);
 };
 
 #endif // COMPAREWINDOW_H

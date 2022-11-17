@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>955</width>
-    <height>638</height>
+    <width>1047</width>
+    <height>597</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <rect>
       <x>20</x>
       <y>10</y>
-      <width>841</width>
+      <width>842</width>
       <height>521</height>
      </rect>
     </property>
@@ -37,6 +37,12 @@
          <width>510</width>
          <height>510</height>
         </size>
+       </property>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
        </property>
       </widget>
      </item>
@@ -56,27 +62,48 @@
         </spacer>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <layout class="QHBoxLayout" name="horizontalLayout_3"/>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <widget class="QPushButton" name="pushButton_12">
-           <property name="text">
-            <string>Таблица значений</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <item>
+            <widget class="QPushButton" name="pushButton_12">
+             <property name="text">
+              <string>Таблица значений</string>
+             </property>
+             <property name="shortcut">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_11">
+             <property name="text">
+              <string>Сравнение</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_11">
-           <property name="text">
-            <string>Сравнение</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_13">
-           <property name="text">
-            <string>Интеграл</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <widget class="QPushButton" name="pushButton_13">
+             <property name="text">
+              <string>Интеграл</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_14">
+             <property name="text">
+              <string>Экстремумы</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
@@ -91,7 +118,7 @@
             <number>49</number>
            </property>
            <property name="placeholderText">
-            <string>Введите функцию. Пример: x*x*cos(x)</string>
+            <string>Введите функцию. Пример: x*x</string>
            </property>
           </widget>
          </item>
@@ -150,7 +177,7 @@
          <item row="9" column="0" colspan="2">
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>                                      Кнопки управления</string>
+            <string>                                 Кнопки управления</string>
            </property>
           </widget>
          </item>
@@ -271,7 +298,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>955</width>
+     <width>1047</width>
      <height>30</height>
     </rect>
    </property>

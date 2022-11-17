@@ -134,7 +134,7 @@ bool valid_str(char* str) {
     return count;
 }
 char* transform(char* str, bool *flag) {
-    int length = strlen(str) - 1, i = 0, j;
+    int length = strlen(str), i = 0, j;
     bool flag_num_op = 0, flag_un_op = 0;
     while (i < length && *flag == 0) {
         while (is_operation_for_transform(str[i]) || is_number(str[i])) {

@@ -18,7 +18,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>721</width>
+     <width>778</width>
      <height>512</height>
     </rect>
    </property>
@@ -36,6 +36,12 @@
         <width>510</width>
         <height>510</height>
        </size>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
       </property>
      </widget>
     </item>
@@ -57,7 +63,7 @@
       <item>
        <widget class="QLineEdit" name="lineEdit">
         <property name="placeholderText">
-         <string>Example: sin(x)</string>
+         <string>Пример: sin(x)</string>
         </property>
        </widget>
       </item>
@@ -86,15 +92,18 @@
          <widget class="QLineEdit" name="lineEdit_2">
           <property name="minimumSize">
            <size>
-            <width>100</width>
+            <width>150</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>100</width>
+            <width>150</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="placeholderText">
+           <string>Пример: 0</string>
           </property>
          </widget>
         </item>
@@ -125,15 +134,18 @@
          <widget class="QLineEdit" name="lineEdit_3">
           <property name="minimumSize">
            <size>
-            <width>100</width>
+            <width>150</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>100</width>
+            <width>150</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="placeholderText">
+           <string>Пример: 2</string>
           </property>
          </widget>
         </item>
@@ -164,13 +176,13 @@
          <widget class="QLineEdit" name="lineEdit_4">
           <property name="minimumSize">
            <size>
-            <width>100</width>
+            <width>150</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>100</width>
+            <width>150</width>
             <height>16777215</height>
            </size>
           </property>

@@ -5,23 +5,30 @@
 #include "deque.h"
 #include "stack.h"
 #include "fileworker.h"
+
+#include "derivativewindow.h"
 #include "secondwindow.h"
 #include "comparewindow.h"
 #include "tableofvalues.h"
 #include "integralwindow.h"
+
+
 #include <QMainWindow>
 #include <QString>
 #include <QList>
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
 #include <QMessageBox>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include <time.h>
+
 #define SCREENW 500
 #define SCREENH 500
+
 QT_BEGIN_NAMESPACE
 using namespace std;
 namespace Ui { class MainWindow; }
@@ -68,14 +75,21 @@ private slots:
 
     void on_pushButton_13_clicked();
 
+    void on_pushButton_14_clicked();
+
 private:
     Ui::MainWindow *ui;
+    TableOfValues *tableOfValuesWindow;
+    CompareWindow *compareWindow;
+    IntegralWindow *integralWindow;
+    DerivativeWindow *derivativeWindow;
+
     QGraphicsScene *scene;
     Deque *head, *tail;
     QPen pen;
     char str[50];
-    Point screen[SCREENW];
-    double f[SCREENW], xmin = -10.0, xmax = 10.0, ymin = -10.0, ymax = 10.0;
+    Point points[SCREENW];
+    double xmin = -10.0, xmax = 10.0, ymin = -10.0, ymax = 10.0;
     FILE* f_logs;
 };
 #endif // MAINWINDOW_H
