@@ -44,12 +44,18 @@ private:
 
     void SetStr();
 
+    void calculateDerivative();
+
 private slots:
     void on_pushButton_3_clicked();
 
     void on_pushButton_clicked();
 
     void on_pushButton_2_clicked();
+
+    void on_radioButton_clicked();
+
+    void on_radioButton_2_clicked();
 
 private:
     Ui::DerivativeWindow *ui;
@@ -62,7 +68,8 @@ private:
     double xmin = -10.0,
            xmax =  10.0,
            ymin = -10.0,
-           ymax =  10.0;
+           ymax =  10.0,
+           phi =   0.5 * (1.0 + sqrt(5.0));
     bool ok_lg =                false,
          ok_rg =                false,
          radioButtonChecked_1 = false,
