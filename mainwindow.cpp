@@ -45,7 +45,7 @@ void MainWindow::PlotGraphAxis(double x0, double y0) {
         double dx = (xmax - xmin) / 20;
         for (i = 260, x = xmin; i < 742; i += 24, x += dx) {
             QGraphicsTextItem *item = new QGraphicsTextItem;
-            str_value_point.setNum(x);
+            str_value_point.setNum(round(x * 1000) / 1000);
             item->setHtml(str_value_point);
             item->setPos(i - 10, y0 - 5);
             scene->addItem(item);
@@ -248,6 +248,14 @@ void MainWindow::on_checkBox_stateChanged(int arg1) {
         xmax = 10;
         PlotGraph(str);
     }
+    if (arg1 == Qt::Checked) {
+        ui->pushButton_5->hide();
+        ui->pushButton_6->hide();
+    } else {
+        ui->pushButton_5->show();
+        ui->pushButton_6->show();
+    }
+
 }
 
 /* ymax = ymin = f[0];

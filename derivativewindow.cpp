@@ -19,6 +19,35 @@ DerivativeWindow::DerivativeWindow(QWidget *parent) :
 DerivativeWindow::~DerivativeWindow() {
     delete ui;
 }
+
+void DerivativeWindow::calculateDerivative() {
+    double eps = 0.000001, a = xmin, b = xmax + 0.000002;
+    Point point1, point2, result;
+    while (fabs(b - a) > eps) {
+        head = parse(str);
+        tail = get_tail(head);
+        point1 = calculate(tail,(b - (b - a) / phi));
+
+        head = parse(str);
+        tail = get_tail(head);
+        point2 = calculate(tail, (a + (b - a) / phi));
+        if (ui->radioButton->isChecked() == point1.y >= point2.y )
+            a = point1.x;
+        else
+            b = point2.x;
+    }
+    head = parse(str);
+    tail = get_tail(head);
+
+    result = calculate(tail, 0.5 * (b + a));
+
+    if (result.flag_division_by_zero || result.flag_scope_definition)
+        ui->lineEdit_4->setText("Нет");
+    else
+        ui->lineEdit_4->setText(QString::number(round(1000000 * result.y) / 1000000));
+}
+
+
 void DerivativeWindow::SetStr() {
     string std_str = ui->lineEdit->text().toStdString();
     int len = (int)std_str.length();
@@ -36,7 +65,7 @@ void DerivativeWindow::PlotGraphAxis(double x0, double y0) {
         double dx = (xmax - xmin) / 20;
         for (i = 260, x = xmin; i < 742; i += 24, x += dx) {
             QGraphicsTextItem *item = new QGraphicsTextItem;
-            str_value_point.setNum(x);
+            str_value_point.setNum(round(x * 10) / 10);
             item->setHtml(str_value_point);
             item->setPos(i - 10, y0 - 5);
             scene->addItem(item);
@@ -149,6 +178,7 @@ void DerivativeWindow::on_pushButton_clicked() {
             ui->lineEdit_2->setReadOnly(true);
             ui->lineEdit_3->setReadOnly(true);
             ui->pushButton_2->setEnabled(true);
+            calculateDerivative();
         }
     } else {
         QMessageBox msgBox(QMessageBox::Information,
@@ -172,4 +202,22 @@ void DerivativeWindow::on_pushButton_2_clicked() {
     ui->lineEdit_2->setReadOnly(false);
     ui->lineEdit_3->setReadOnly(false);
     ui->pushButton->setEnabled(true);
+}
+
+void DerivativeWindow::on_radioButton_clicked() {
+    if (radioButtonChecked_2) {
+        ui->radioButton_2->setChecked(Qt::Unchecked);
+        calculateDerivative();
+        radioButtonChecked_2 = false;
+        radioButtonChecked_1 = true;
+    }
+}
+
+void DerivativeWindow::on_radioButton_2_clicked() {
+    if (radioButtonChecked_1) {
+        ui->radioButton->setChecked(Qt::Unchecked);
+        calculateDerivative();
+        radioButtonChecked_1 = false;
+        radioButtonChecked_2 = true;
+    }
 }
