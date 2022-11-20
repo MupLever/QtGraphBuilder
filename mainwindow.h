@@ -1,9 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "parse_str.h"
-#include "calculate.h"
-#include "deque.h"
 #include "fileworker.h"
 #include "plot.h"
 
@@ -17,7 +14,6 @@
 
 #include <QMainWindow>
 #include <QString>
-#include <QList>
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
 #include <QMessageBox>

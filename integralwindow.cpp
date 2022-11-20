@@ -13,6 +13,10 @@ IntegralWindow::IntegralWindow(QWidget *parent) :
     ui->graphicsView->setScene(scene);
     pen.setColor(Qt::red);
     pen.setWidth(2);
+
+    ok_lg = false;
+    ok_rg = false;
+
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
     setFixedSize(QSize(800, 550));
 }
@@ -79,17 +83,19 @@ void IntegralWindow::on_pushButton_clicked() {
             ui->lineEdit_2->setReadOnly(true);
             ui->lineEdit_3->setReadOnly(true);
             ui->pushButton->setEnabled(false);
-    //        ui->checkBox->setEnabled(true);
             ui->pushButton_2->setEnabled(true);
             double result = IntegralCalculate(&flag);
             if (flag) {
                 ui->lineEdit_4->setText("Не определен");
             } else {
                 ui->lineEdit_4->setText(QString::number(result));
+
                 plot.setXMin(a - 1);
                 plot.setXMax(b + 1);
+
                 plot.setKXY();
                 plot.setXY();
+
                 plot.plotGraph(str, scene, pen, true);
                 plot.brushGraph(scene, a, b);
                 plot.plotGraphAxis(scene, pen);
@@ -115,9 +121,10 @@ void IntegralWindow::on_pushButton_2_clicked() {
     ui->lineEdit_2->setReadOnly(false);
     ui->lineEdit_3->setReadOnly(false);
     ui->pushButton->setEnabled(true);
+
     plot.setXMin(-10);
     plot.setXMax(10);
+
     plot.setYMin(-10);
     plot.setYMax(10);
-//    ui->checkBox->setEnabled(false);
 }

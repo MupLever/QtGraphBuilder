@@ -35,16 +35,29 @@ private slots:
     void on_radioButton_2_clicked();
 
 private:
-    void calculateTable(int count, bool options);
-    void clearWindow();
-    void SetAtributes();
+    void calculateTable(int count, bool options); // строит таблицу
+    void clearWindow(); // очищает окно и поля ввода
+    void SetAtributes(); // устанавливает аттрибуты
+
     Ui::TableOfValues *ui;
+
     QStandardItemModel *model;
+
     char str[50];
-    bool ok_lg = false, ok_rg = false, ok_count = false, radioButtonChecked_1 = false, radioButtonChecked_2 = false;
-    Deque *head, *tail;
-    double xmin = -10.0, xmax = 10.0;
-    int count = 20;
+
+    bool ok_lg, // ставится в 1, если вернулось корректное значение левой границы
+         ok_rg, // ставится в 1, если вернулось корректное значение правой границы
+         ok_count, // ставится в 1, если вернулось корректное количества записей
+         radioButtonChecked_1, // ставится в 1, если нажат radio_button_1
+         radioButtonChecked_2; // ставится в 1, если нажат radio_button_2
+
+    Deque *head,
+          *tail;
+
+    double xmin, // левая граница
+           xmax; // правая граница
+
+    int count;
 };
 
 #endif // TABLEOFVALUES_H

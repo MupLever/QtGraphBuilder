@@ -4,6 +4,7 @@ void Plot::setKXY() {
     kx = (xmax - xmin) / 479;
     ky = (ymax - ymin) / 479;
 }
+
 void Plot::setXY() {
     y0 = SCREENH - 10 - (int)(round((0 - ymin) / ky));
     x0 = (round((0 - xmin) / kx)) + 10;
@@ -12,7 +13,7 @@ void Plot::setXY() {
 void Plot::plotGraphAxis(QGraphicsScene *scene, QPen pen) {
     QString str_value_point;
     int i = 0;
-    double x, temp;
+    double x;
     if (y0 >= 10 && y0 <= SCREENH - 10) {
         scene->addLine(260, y0, 742, y0, QPen(Qt::black));
         double dx = (xmax - xmin) / 20;

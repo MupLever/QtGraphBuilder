@@ -10,9 +10,20 @@ DerivativeWindow::DerivativeWindow(QWidget *parent) :
     ui->pushButton_2->setEnabled(false);
     scene = new QGraphicsScene;
     ui->graphicsView->setScene(scene);
+
     pen.setColor(Qt::red);
     pen.setWidth(2);
-    setFixedSize(QSize(850,530));
+
+    ok_lg =                false;
+    ok_rg =                false;
+    radioButtonChecked_1 = false;
+    radioButtonChecked_2 = false;
+
+    xmin = -10.0;
+    xmax =  10.0;
+    phi =   0.5 * (1.0 + sqrt(5.0));
+
+    setFixedSize(QSize(850,530)); // фиксрование размеров окна
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
 }
 

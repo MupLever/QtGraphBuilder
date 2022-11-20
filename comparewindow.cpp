@@ -11,14 +11,17 @@ CompareWindow::CompareWindow(QWidget *parent) :
     ui->pushButton_2->setEnabled(false);
     scene = new QGraphicsScene;
     ui->graphicsView->setScene(scene);
-    pen1.setColor(Qt::green);
-    pen1.setWidth(2);
-    pen2.setColor(Qt::blue);
-    pen2.setWidth(2);
-    pen3.setColor(Qt::black);
-    pen3.setWidth(2);
+
+    xmin = -10.0;
+    xmax = 10.0;
+    ymin = -10.0;
+    ymax = 10.0;
+
+    ok_lg = false;
+    ok_rg = false;
+
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
-    setFixedSize(QSize(820,580));
+    setFixedSize(QSize(820,580)); // фиксирование размеров окна
 }
 
 CompareWindow::~CompareWindow() {
@@ -71,10 +74,12 @@ void CompareWindow::on_pushButton_clicked() {
 
             plot.setXMin(xmin);
             plot.setXMax(xmax);
+
             plot.plotGraph(str_func1, scene, QPen(Qt::green), false);
             plot.plotGraph(str_func2, scene, QPen(Qt::blue), false);
 
             plot.plotGraphAxis(scene, pen);
+
             ui->lineEdit->setReadOnly(true);
             ui->lineEdit_2->setReadOnly(true);
             ui->lineEdit_3->setReadOnly(true);
@@ -94,10 +99,15 @@ void CompareWindow::on_pushButton_clicked() {
 
 void CompareWindow::on_checkBox_stateChanged(int arg1) {
     if (ui->lineEdit->text().length() != 0) {
-        scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+        scene->addRect(250, 0, 500, 510, QPen(Qt::white), QBrush(Qt::white));
         plot.setYMin(-10);
         plot.setYMax(10);
-        plot.plotGraph(str_func1, scene, QPen(Qt::green), true);
+        if (arg1 == Qt::Unchecked) {
+            plot.plotGraph(str_func1, scene, QPen(Qt::green), false);
+
+        } else {
+            plot.plotGraph(str_func1, scene, QPen(Qt::green), true);
+        }
         plot.plotGraph(str_func2, scene, QPen(Qt::blue), false);
         plot.plotGraphAxis(scene, pen);
     }
