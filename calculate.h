@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+
 struct Point {
     double x;
     double y;

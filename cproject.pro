@@ -25,8 +25,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     parse_str.cpp \
+    plot.cpp \
     secondwindow.cpp \
-    stack.cpp \
     tableofvalues.cpp
 
 HEADERS += \
@@ -38,8 +38,8 @@ HEADERS += \
     integralwindow.h \
     mainwindow.h \
     parse_str.h \
+    plot.h \
     secondwindow.h \
-    stack.h \
     tableofvalues.h
 
 FORMS += \

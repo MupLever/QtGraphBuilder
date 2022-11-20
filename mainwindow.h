@@ -1,10 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+
 #include "parse_str.h"
 #include "calculate.h"
 #include "deque.h"
-#include "stack.h"
 #include "fileworker.h"
+#include "plot.h"
+
 
 #include "derivativewindow.h"
 #include "secondwindow.h"
@@ -42,8 +44,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 private:
-    void PlotGraph(char *str);
-    void PlotGraphAxis(double x0, double y0);
     void SetStr();
 
 private slots:
@@ -85,11 +85,9 @@ private:
     DerivativeWindow *derivativeWindow;
 
     QGraphicsScene *scene;
-    Deque *head, *tail;
     QPen pen;
     char str[50];
-    Point points[SCREENW];
-    double xmin = -10.0, xmax = 10.0, ymin = -10.0, ymax = 10.0;
+    Plot plot;
     FILE* f_logs;
 };
 #endif // MAINWINDOW_H
