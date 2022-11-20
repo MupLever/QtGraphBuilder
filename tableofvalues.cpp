@@ -7,8 +7,24 @@ TableOfValues::TableOfValues(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("GROW");
-    setFixedSize(QSize(650,400));
-    ui->pushButton_3->setEnabled(false);
+    setFixedSize(QSize(650,400)); // фиксирует размер окна
+    ui->pushButton_3->setEnabled(false); // делает кнопку "очистить" недоступной
+
+    ok_lg =                false;
+    ok_rg =                false;
+    ok_count =             false;
+    radioButtonChecked_1 = false;
+    radioButtonChecked_2 = false;
+
+    head = nullptr;
+    tail = nullptr;
+
+    xmin = -10.0;
+    xmax =  10.0;
+
+    count = 20;
+
+    str[0] = '\0';
 }
 
 TableOfValues::~TableOfValues() {
@@ -20,6 +36,7 @@ void TableOfValues::on_pushButton_2_clicked() {
 }
 void TableOfValues::SetAtributes() {
     int i;
+
     std::string std_str = ui->lineEdit_3->text().toStdString();
     int len = (int)std_str.length();
     for (i = 0; i < len; i++)
@@ -27,9 +44,11 @@ void TableOfValues::SetAtributes() {
     str[len] = '\0';
     trim(str);
 
-    xmin = ui->lineEdit->text().toDouble(&ok_lg);
-    xmax = ui->lineEdit_2->text().toDouble(&ok_rg);
-    count = ui->lineEdit_4->text().toInt(&ok_count);
+    xmin = ui->lineEdit->text().toDouble(&ok_lg); // преобразование из строки в вещественное число
+    xmax = ui->lineEdit_2->text().toDouble(&ok_rg); // преобразование из строки в вещественное число
+    count = ui->lineEdit_4->text().toInt(&ok_count); // преобразование из строки в целое число
+
+    // если нажат checkbox, то вычисляется всего одно значение
     if (ui->checkBox->isChecked()) {
         count = 1;
         xmax = xmin;
@@ -37,10 +56,6 @@ void TableOfValues::SetAtributes() {
 }
 void TableOfValues::calculateTable(int count, bool options) {
     int i = 0;
-    ui->lineEdit->setReadOnly(true);
-    ui->lineEdit_2->setReadOnly(true);
-    ui->lineEdit_3->setReadOnly(true);
-    ui->lineEdit_4->setReadOnly(true);
 
     double dx = (xmax - xmin) / (count - 1), x;
 
@@ -67,6 +82,8 @@ void TableOfValues::calculateTable(int count, bool options) {
         index = model->index(i, 1);
         head = parse(str);
         tail = get_tail(head);
+
+        // если выбрано значние производной функции
         if (options) {
             f1 = calculate(tail, (x + 0.000001));
 
@@ -125,6 +142,12 @@ void TableOfValues::on_pushButton_clicked() {
             msgBox.exec();
         } else {
             calculateTable(count, radioButtonChecked_2);
+
+            ui->lineEdit->setReadOnly(true);
+            ui->lineEdit_2->setReadOnly(true);
+            ui->lineEdit_3->setReadOnly(true);
+            ui->lineEdit_4->setReadOnly(true);
+
             ui->pushButton_3->setEnabled(true);
             ui->pushButton->setEnabled(false);
         }
@@ -177,14 +200,13 @@ void TableOfValues::on_checkBox_stateChanged(int arg1) {
         ui->lineEdit_4->setReadOnly(false);
         ui->pushButton_3->setEnabled(false);
         ui->pushButton->setEnabled(true);
-        delete model;
     }
 }
 // Выбрана функция
 void TableOfValues::on_radioButton_clicked() {
     if (radioButtonChecked_2) {
         ui->radioButton_2->setChecked(Qt::Unchecked);
-        calculateTable(count, Qt::Unchecked);
+        calculateTable(count, false);
         radioButtonChecked_2 = false;
         radioButtonChecked_1 = true;
     }
@@ -194,7 +216,7 @@ void TableOfValues::on_radioButton_clicked() {
 void TableOfValues::on_radioButton_2_clicked() {
     if (radioButtonChecked_1) {
         ui->radioButton->setChecked(Qt::Unchecked);
-        calculateTable(count, Qt::Checked);
+        calculateTable(count, true);
         radioButtonChecked_1 = false;
         radioButtonChecked_2 = true;
     }

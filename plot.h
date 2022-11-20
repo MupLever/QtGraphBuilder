@@ -14,11 +14,18 @@
 
 #define SCREENW 500
 #define SCREENH 500
+// класс, в котором все необходимое для построения графика
 class Plot {
 public:
     Plot() :x0(0), y0(0), xmin(-10), ymin(-10), xmax(10), ymax(10), kx(1), ky(1) {}
+
+    // отрисовка осей
     void plotGraphAxis(QGraphicsScene *scene, QPen pen);
+
+   // отрисовка графика функций
     void plotGraph(char *str, QGraphicsScene *scene, QPen pen, bool check);
+
+    // закрашивание области под графиком
     void brushGraph(QGraphicsScene *scene, double a, double b);
 
     void setXMin(const double xmin) { this->xmin = xmin; }
@@ -34,12 +41,18 @@ public:
     double getX0() { return x0; }
     double getY0() { return y0; }
 
-    void setXY();
-    void setKXY();
-private:
+    void setXY(); // устанавливает х0 и у0
+    void setKXY();// устанавливает коэффициенты масштабирования
 
-    Deque *head, *tail;
+private:
+    Deque *head,
+          *tail;
+
     Point points[SCREENW];
-    double x0, y0, xmin, ymin, xmax, ymax, kx, ky;
+
+    double x0, y0,
+           xmin, ymin,
+           xmax, ymax,
+           kx, ky;
 };
 #endif // PLOT_H

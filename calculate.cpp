@@ -34,6 +34,7 @@ Point calculate(Deque* tail , double x) {
                     temp->data.num = 1.0 / tmp_tan;
             } else
                 temp->data.num = -temp->data.num;
+            // удаление узла с функцией
             q = temp->prev;
             if (q->prev != NULL) {
                 temp->prev = q->prev;
@@ -58,6 +59,8 @@ Point calculate(Deque* tail , double x) {
                 } else
                     temp->next->data.num = temp->next->data.num / temp->data.num;
             }
+
+            // удаление двух узлов: числа и оператора
             temp = temp->next;
             q = temp->prev;
             p = q->prev;

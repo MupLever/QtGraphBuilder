@@ -3,13 +3,9 @@
 
 #include <QDialog>
 
-#include "parse_str.h"
-#include "calculate.h"
-#include "deque.h"
 #include "plot.h"
 
 #include <QString>
-#include <QList>
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
 #include <QMessageBox>
@@ -38,9 +34,10 @@ public:
     explicit DerivativeWindow(QWidget *parent = nullptr);
     ~DerivativeWindow();
 private:
-
+    // инициализирует строку после пользовательского ввода
     void SetStr();
 
+    // метод золотого сечения для нахождения экстремумов
     void calculateDerivative();
 
 private slots:
@@ -61,13 +58,15 @@ private:
     Deque *head, *tail;
     QPen pen;
     char str[50];
-    double xmin = -10.0,
-           xmax =  10.0,
-           phi =   0.5 * (1.0 + sqrt(5.0));
-    bool ok_lg =                false,
-         ok_rg =                false,
-         radioButtonChecked_1 = false,
-         radioButtonChecked_2 = false;
+    double xmin, //левая граница
+           xmax, //правая граница
+           phi; // пропорция золотого сечения
+
+    bool ok_lg, // ставится в 1, если вернулось корректное значение левой границы
+         ok_rg, // ставится в 1, если вернулось корректное значение правой границы
+         radioButtonChecked_1, // ставится в 1, если нажат radio_button_1
+         radioButtonChecked_2; // ставится в 1, если нажат radio_button_2
+
     Plot plot;
 };
 

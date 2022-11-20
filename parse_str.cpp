@@ -69,6 +69,7 @@ double get_number(char* str, int *index) {
     return result;
 }
 
+/*
 short int is_str_to_float(const std::string str) {
     int i = 0;
     unsigned short int flag_point = 0;
@@ -83,6 +84,7 @@ short int is_str_to_float(const std::string str) {
     if (i == 1 && str[0] == '-') return 0;
     return 1;
 }
+*/
 
 bool is_operation_for_transform(char c) {
     const char opertations[] = {'*', '/', '+', '-', '~', '(', ')', 'x', '.'};

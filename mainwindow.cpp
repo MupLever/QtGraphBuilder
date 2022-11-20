@@ -43,7 +43,9 @@ void MainWindow::on_pushButton_clicked() {
     SetStr();
     strcpy(stroka, str);
     transform(str, &flag);
-    if (valid_str(str) != 0 || flag || strlen(str) == 0) {
+    if (valid_str(str) != 0 ||
+        flag ||
+        strlen(str) == 0) {
         QMessageBox msgBox(QMessageBox::Information,
                            "GROW", "Неверное выражение",
                            QMessageBox::Ok);
@@ -60,9 +62,12 @@ void MainWindow::on_pushButton_clicked() {
         ui->pushButton_6->setEnabled(true);
         ui->pushButton_7->setEnabled(true);
         ui->pushButton_8->setEnabled(true);
+
         //clock_t time_start = clock();
+
         plot.plotGraph(str, scene, pen, ui->checkBox->isChecked());
         plot.plotGraphAxis(scene, pen);
+
         //clock_t time_end = clock();
         //double time_dif = (double)(time_end - time_start) / CLOCKS_PER_SEC;
         //printf("%lf\n", time_dif);
@@ -86,42 +91,54 @@ void MainWindow::on_pushButton_2_clicked() {
     ui->lineEdit->setText("");
 }
 
+// смещение графика по х влево
 void MainWindow::on_pushButton_3_clicked() {
     scene->clear();
     scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+
     plot.setXMin(plot.getXMin() - 1);
     plot.setXMax(plot.getXMax() - 1);
+
     plot.plotGraph(str, scene, pen, ui->checkBox->isChecked());
     plot.plotGraphAxis(scene, pen);
 }
 
+// смещение графика по х вправо
 void MainWindow::on_pushButton_4_clicked() {
     scene->clear();
     scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+
     plot.setXMin(plot.getXMin() + 1);
     plot.setXMax(plot.getXMax() + 1);
+
     plot.plotGraph(str, scene, pen, ui->checkBox->isChecked());
     plot.plotGraphAxis(scene, pen);
 }
-
+// смещение графика по у вверх
 void MainWindow::on_pushButton_5_clicked() {
     scene->clear();
     scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+
     plot.setYMin(plot.getYMin() + 1);
     plot.setYMax(plot.getYMax() + 1);
+
     plot.plotGraph(str, scene, pen, ui->checkBox->isChecked());
     plot.plotGraphAxis(scene, pen);
 }
 
+// смещение графика по у вниз
 void MainWindow::on_pushButton_6_clicked() {
     scene->clear();
     scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+
     plot.setYMin(plot.getYMin() - 1);
     plot.setYMax(plot.getYMax() - 1);
+
     plot.plotGraph(str, scene, pen, ui->checkBox->isChecked());
     plot.plotGraphAxis(scene, pen);
 }
 
+// увеличение графика
 void MainWindow::on_pushButton_7_clicked(){
     scene->clear();
     scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
@@ -137,6 +154,7 @@ void MainWindow::on_pushButton_7_clicked(){
     plot.plotGraphAxis(scene, pen);
 }
 
+// отдаление от графика
 void MainWindow::on_pushButton_8_clicked() {
     scene->clear();
     scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
@@ -148,6 +166,8 @@ void MainWindow::on_pushButton_8_clicked() {
     plot.plotGraphAxis(scene, pen);
 }
 
+
+// вывод файла в таблицу
 void MainWindow::on_pushButton_9_clicked() {
     SecondWindow second_window;
     second_window.setModal(true);
@@ -170,10 +190,12 @@ void MainWindow::on_checkBox_stateChanged(int arg1) {
     if (ui->lineEdit->text().length() != 0) {
         scene->clear();
         scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+
         plot.setYMax(10);
         plot.setYMin(-10);
         plot.setXMax(10);
         plot.setXMin(-10);
+
         plot.plotGraph(str, scene, pen, ui->checkBox->isChecked());
         plot.plotGraphAxis(scene, pen);
     }
