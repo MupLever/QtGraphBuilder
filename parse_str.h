@@ -2,11 +2,11 @@
 #define SRC_PARSE_STR_H_
 #include "deque.h"
 #include "calculate.h"
-#include "stack.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <iostream>
+#include <stack>
 char *trim(char *str);
 bool valid_str(char* str);
 int str_to_int(char c);

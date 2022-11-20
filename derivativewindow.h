@@ -6,7 +6,7 @@
 #include "parse_str.h"
 #include "calculate.h"
 #include "deque.h"
-#include "stack.h"
+#include "plot.h"
 
 #include <QString>
 #include <QList>
@@ -38,9 +38,6 @@ public:
     explicit DerivativeWindow(QWidget *parent = nullptr);
     ~DerivativeWindow();
 private:
-    void PlotGraph(char *str);
-
-    void PlotGraphAxis(double x0, double y0);
 
     void SetStr();
 
@@ -64,16 +61,14 @@ private:
     Deque *head, *tail;
     QPen pen;
     char str[50];
-    Point points[SCREENW];
     double xmin = -10.0,
            xmax =  10.0,
-           ymin = -10.0,
-           ymax =  10.0,
            phi =   0.5 * (1.0 + sqrt(5.0));
     bool ok_lg =                false,
          ok_rg =                false,
          radioButtonChecked_1 = false,
          radioButtonChecked_2 = false;
+    Plot plot;
 };
 
 #endif // DERIVATIVEWINDOW_H

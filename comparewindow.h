@@ -2,8 +2,8 @@
 #define COMPAREWINDOW_H
 #include "parse_str.h"
 #include "calculate.h"
+#include "plot.h"
 #include "deque.h"
-#include "stack.h"
 #include <QDialog>
 #include <QString>
 #include <QGraphicsScene>
@@ -51,8 +51,7 @@ private:
 
     void SetStr();
     QPen pen;
-    void PlotGraph();
-    void PlotGraphAxis(double x0, double y0);
+    Plot plot;
 };
 
 #endif // COMPAREWINDOW_H

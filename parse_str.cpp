@@ -194,7 +194,7 @@ bool cmp_priority(char sym1, char sym2) {
 Deque* parse(char* str) {
     Node data;
     data.num = 0;
-    Stack* operations = NULL;
+    std::stack<char> operations;
     Deque* head = NULL;
     int length = strlen(str), i = 0;
     bool flag_error = 0;
@@ -203,7 +203,7 @@ Deque* parse(char* str) {
             data.sym = 'x';
             data.num = 0;
             head = push(head, &data);
-            i++;
+            ++i;
         }
         if (is_number(str[i])) {
             data.sym = ' ';
@@ -212,38 +212,38 @@ Deque* parse(char* str) {
             data.num = 0;
         }
         if (is_operation_for_parse(str[i])) {
-            if (operations != NULL && (cmp_priority(operations->data, str[i]) && str[i] != '(')) {
-                data.sym = operations->data;
+            if (!operations.empty() && (cmp_priority(operations.top(), str[i]) && str[i] != '(')) {
+                data.sym = operations.top();
                 head = push(head, &data);
-                operations = pop_front(operations);
+                operations.pop();
             }
-            operations = push_front(operations, str[i]);
-            i++;
+            operations.push(str[i]);
+            ++i;
             data.sym = ' ';
         }
         if (str[i] == ')') {
-            while (operations->next != NULL && operations->data != '(') {
-                data.sym = operations->data;
+            while (!operations.empty() && operations.top() != '(') {
+                data.sym = operations.top();
                 head = push(head, &data);
-                operations = pop_front(operations);
+                operations.pop();
             }
-            if (operations->data != '(') {
+            if (operations.top() != '(') {
                 flag_error = 1;
             }
-            operations = pop_front(operations);
-            if (operations != NULL && is_operator(operations->data)) {
-                data.sym = operations->data;
+            operations.pop();
+            if (!operations.empty() && is_operator(operations.top())) {
+                data.sym = operations.top();
                 head = push(head, &data);
-                operations = pop_front(operations);
+                operations.pop();
             }
             ++i;
             data.sym = ' ';
         }
         if (i >= length) {
-            while (operations != NULL) {
-                data.sym = operations->data;
+            while (!operations.empty()) {
+                data.sym = operations.top();
                 head = push(head, &data);
-                operations = pop_front(operations);
+                operations.pop();
             }
         }
     }

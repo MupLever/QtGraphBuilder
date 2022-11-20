@@ -5,7 +5,6 @@
 #include "parse_str.h"
 #include "calculate.h"
 #include "deque.h"
-#include "stack.h"
 #include <QTableView>
 #include <QStandardItemModel>
 #include <QMessageBox>
