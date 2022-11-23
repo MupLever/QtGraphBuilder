@@ -32,9 +32,20 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_lineEdit_textEdited(const QString &arg1);
+
+    void on_lineEdit_2_textEdited(const QString &arg1);
+
+    void on_lineEdit_3_textEdited(const QString &arg1);
+
+    void on_lineEdit_4_textEdited(const QString &arg1);
+
 private:
     // инициализирует строку после пользовательского ввода
     void SetStr();
+
+    //
+    void someLineEdited();
 
     Ui::CompareWindow *ui;
 
@@ -48,8 +59,8 @@ private:
            ymax;
 
     bool ok_lg, // ставится в 1, если вернулось корректное значение левой границы
-         ok_rg; // ставится в 1, если вернулось корректное значение правой границы
-
+         ok_rg, // ставится в 1, если вернулось корректное значение правой границы
+         builtGraphFlag;
     QPen pen;
     Plot plot;
 };

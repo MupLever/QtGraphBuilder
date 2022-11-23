@@ -7,13 +7,11 @@ IntegralWindow::IntegralWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("GROW");
-    ui->pushButton_2->setEnabled(false);
-    ui->lineEdit_4->setReadOnly(true);
     scene = new QGraphicsScene;
     ui->graphicsView->setScene(scene);
     pen.setColor(Qt::red);
     pen.setWidth(2);
-
+    builtGraphFlag = false;
     ok_lg = false;
     ok_rg = false;
 
@@ -79,11 +77,7 @@ void IntegralWindow::on_pushButton_clicked() {
             msgBox.exec();
         } else {
             bool flag = false;
-            ui->lineEdit->setReadOnly(true);
-            ui->lineEdit_2->setReadOnly(true);
-            ui->lineEdit_3->setReadOnly(true);
-            ui->pushButton->setEnabled(false);
-            ui->pushButton_2->setEnabled(true);
+            builtGraphFlag = true;
             double result = IntegralCalculate(&flag);
             if (flag) {
                 ui->lineEdit_4->setText("Не определен");
@@ -111,20 +105,37 @@ void IntegralWindow::on_pushButton_clicked() {
 }
 
 void IntegralWindow::on_pushButton_2_clicked() {
-    scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    scene->clear();
+    ui->graphicsView->items().clear();
     str[0] = '\0';
     ui->lineEdit->setText("");
     ui->lineEdit_2->setText("");
     ui->lineEdit_3->setText("");
     ui->lineEdit_4->setText("");
-    ui->lineEdit->setReadOnly(false);
-    ui->lineEdit_2->setReadOnly(false);
-    ui->lineEdit_3->setReadOnly(false);
-    ui->pushButton->setEnabled(true);
 
     plot.setXMin(-10);
     plot.setXMax(10);
 
     plot.setYMin(-10);
     plot.setYMax(10);
+}
+
+void IntegralWindow::someLineEdited() {
+    if (builtGraphFlag) {
+        builtGraphFlag = false;
+        scene->clear();
+        ui->graphicsView->items().clear();
+        ui->lineEdit_4->setText("");
+    }
+}
+void IntegralWindow::on_lineEdit_textEdited(const QString &arg1) {
+    someLineEdited();
+}
+
+void IntegralWindow::on_lineEdit_2_textEdited(const QString &arg1) {
+    someLineEdited();
+}
+
+void IntegralWindow::on_lineEdit_3_textEdited(const QString &arg1) {
+    someLineEdited();
 }

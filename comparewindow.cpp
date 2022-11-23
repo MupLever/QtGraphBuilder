@@ -6,9 +6,11 @@ CompareWindow::CompareWindow(QWidget *parent) :
     ui(new Ui::CompareWindow) {
     ui->setupUi(this);
     setWindowTitle("GROW");
+    setFixedSize(QSize(820,580)); // фиксирование размеров окна
+
     ui->checkBox->setCheckState(Qt::Unchecked);
     ui->checkBox->setEnabled(false);
-    ui->pushButton_2->setEnabled(false);
+
     scene = new QGraphicsScene;
     ui->graphicsView->setScene(scene);
 
@@ -19,9 +21,10 @@ CompareWindow::CompareWindow(QWidget *parent) :
 
     ok_lg = false;
     ok_rg = false;
+    builtGraphFlag = false;
 
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
-    setFixedSize(QSize(820,580)); // фиксирование размеров окна
+
 }
 
 CompareWindow::~CompareWindow() {
@@ -80,13 +83,8 @@ void CompareWindow::on_pushButton_clicked() {
 
             plot.plotGraphAxis(scene, pen);
 
-            ui->lineEdit->setReadOnly(true);
-            ui->lineEdit_2->setReadOnly(true);
-            ui->lineEdit_3->setReadOnly(true);
-            ui->lineEdit_4->setReadOnly(true);
             ui->checkBox->setEnabled(true);
-            ui->pushButton->setEnabled(false);
-            ui->pushButton_2->setEnabled(true);
+            builtGraphFlag = true;
         }
     } else {
         QMessageBox msgBox(QMessageBox::Information,
@@ -121,11 +119,33 @@ void CompareWindow::on_pushButton_2_clicked() {
     ui->lineEdit_2->setText("");
     ui->lineEdit_3->setText("");
     ui->lineEdit_4->setText("");
-    ui->lineEdit->setReadOnly(false);
-    ui->lineEdit_2->setReadOnly(false);
-    ui->lineEdit_3->setReadOnly(false);
-    ui->lineEdit_4->setReadOnly(false);
+
     ui->checkBox->setEnabled(false);
+
     ui->pushButton->setEnabled(true);
     ui->pushButton_2->setEnabled(false);
+}
+
+void CompareWindow::someLineEdited() {
+    if (builtGraphFlag) {
+        builtGraphFlag = false;
+        scene->clear();
+        ui->graphicsView->items().clear();
+        ui->lineEdit_4->setText("");
+    }
+}
+void CompareWindow::on_lineEdit_textEdited(const QString &arg1) {
+    someLineEdited();
+}
+
+void CompareWindow::on_lineEdit_2_textEdited(const QString &arg1) {
+    someLineEdited();
+}
+
+void CompareWindow::on_lineEdit_3_textEdited(const QString &arg1) {
+    someLineEdited();
+}
+
+void CompareWindow::on_lineEdit_4_textEdited(const QString &arg1) {
+    someLineEdited();
 }

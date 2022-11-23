@@ -7,7 +7,8 @@ DerivativeWindow::DerivativeWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("GROW");
-    ui->pushButton_2->setEnabled(false);
+    setFixedSize(QSize(850,530)); // фиксрование размеров окна
+
     scene = new QGraphicsScene;
     ui->graphicsView->setScene(scene);
 
@@ -18,12 +19,12 @@ DerivativeWindow::DerivativeWindow(QWidget *parent) :
     ok_rg =                false;
     radioButtonChecked_1 = false;
     radioButtonChecked_2 = false;
+    builtGraphFlag = false;
 
     xmin = -10.0;
     xmax =  10.0;
     phi =   0.5 * (1.0 + sqrt(5.0));
 
-    setFixedSize(QSize(850,530)); // фиксрование размеров окна
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
 }
 
@@ -109,11 +110,7 @@ void DerivativeWindow::on_pushButton_clicked() {
             plot.setXMax(xmax);
             plot.plotGraph(str, scene, pen, true);
             plot.plotGraphAxis(scene, pen);
-
-            ui->lineEdit->setReadOnly(true);
-            ui->lineEdit_2->setReadOnly(true);
-            ui->lineEdit_3->setReadOnly(true);
-            ui->pushButton_2->setEnabled(true);
+            builtGraphFlag = true;
             calculateDerivative();
         }
     } else {
@@ -129,16 +126,13 @@ void DerivativeWindow::on_pushButton_clicked() {
 
 // clear
 void DerivativeWindow::on_pushButton_2_clicked() {
-    scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    scene->clear();
+    ui->graphicsView->items().clear();
     str[0] = '\0';
     ui->lineEdit->setText("");
     ui->lineEdit_2->setText("");
     ui->lineEdit_3->setText("");
     ui->lineEdit_4->setText("");
-    ui->lineEdit->setReadOnly(false);
-    ui->lineEdit_2->setReadOnly(false);
-    ui->lineEdit_3->setReadOnly(false);
-    ui->pushButton->setEnabled(true);
 }
 
 void DerivativeWindow::on_radioButton_clicked() {
@@ -157,4 +151,25 @@ void DerivativeWindow::on_radioButton_2_clicked() {
         radioButtonChecked_1 = false;
         radioButtonChecked_2 = true;
     }
+}
+
+void DerivativeWindow::someLineEdited() {
+    if (builtGraphFlag) {
+        builtGraphFlag = false;
+        scene->clear();
+        ui->graphicsView->items().clear();
+        ui->lineEdit_4->setText("");
+    }
+}
+
+void DerivativeWindow::on_lineEdit_textEdited(const QString &arg1) {
+    someLineEdited();
+}
+
+void DerivativeWindow::on_lineEdit_2_textEdited(const QString &arg1) {
+    someLineEdited();
+}
+
+void DerivativeWindow::on_lineEdit_3_textEdited(const QString &arg1) {
+    someLineEdited();
 }

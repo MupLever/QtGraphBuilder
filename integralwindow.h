@@ -30,6 +30,12 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_lineEdit_textEdited(const QString &arg1);
+
+    void on_lineEdit_2_textEdited(const QString &arg1);
+
+    void on_lineEdit_3_textEdited(const QString &arg1);
+
 private:
     //вычисление интеграла путем разбиения отрезка на
     //множество подотрезков и выисления площади прямугольников
@@ -37,13 +43,18 @@ private:
 
     // инициализирует строку после пользовательского ввода
     void SetStr();
+
+    //
+    void someLineEdited();
+
     Ui::IntegralWindow *ui;
     QGraphicsScene *scene;
     Deque *head, *tail;
     QPen pen;
     char str[50];
     bool ok_lg, // ставится в 1, если вернулось корректное значение левой границы
-         ok_rg;// ставится в 1, если вернулось корректное значение правой границы
+         ok_rg,// ставится в 1, если вернулось корректное значение правой границы
+         builtGraphFlag;
     double a, // левая граница интегрирования
            b; // правая граница интегрирования
     Plot plot;

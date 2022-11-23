@@ -94,7 +94,7 @@ void Plot::brushGraph(QGraphicsScene *scene, double a, double b) {
     for (int i = left_border; i < right_border && i < 498; ++i) {
         if (points[i].y >= 0 && points[i].y <= 500 &&
             points[i + 1].y >= 0 && points[i + 1].y <= 500) {
-            scene->addRect(points[i].x, y0, points[i + 1].x - points[i].x, points[i].y - y0 + 2, QPen(Qt::green), QBrush(Qt::green));
+            scene->addRect(points[i].x, y0, points[i + 1].x - points[i].x, points[i].y - y0 - (points[i].y > y0 ? 4 : -4), QPen(Qt::green), QBrush(Qt::green));
         }
     }
 }
