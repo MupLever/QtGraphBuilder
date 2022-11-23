@@ -2,10 +2,12 @@
 #define FILEWORKER_H
 #include <stdio.h>
 #include "mainwindow.h"
+
 struct Record {
     char func[50];
     char date[20];
 };
+
 // получение размера файла
 int GetFileSizeInBytes(FILE *pfile);
 

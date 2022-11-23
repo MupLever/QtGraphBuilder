@@ -6,8 +6,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     setWindowTitle("GROW");
     ui->checkBox->setCheckState(Qt::Unchecked);
-    ui->checkBox->setEnabled(false);
-    ui->pushButton_2->setEnabled(false);
     ui->pushButton_3->setEnabled(false);
     ui->pushButton_4->setEnabled(false);
     ui->pushButton_5->setEnabled(false);
@@ -20,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     pen.setWidth(2);
     setFixedSize(QSize(950,550));
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
-
+    builtGraphFlag = false;
 }
 
 MainWindow::~MainWindow() {
@@ -52,10 +50,8 @@ void MainWindow::on_pushButton_clicked() {
         msgBox.exec();
     } else {
         WriteFile(f_logs, stroka);
-        ui->lineEdit->setReadOnly(true);
-        ui->pushButton->setEnabled(false);
         ui->checkBox->setEnabled(true);
-        ui->pushButton_2->setEnabled(true);
+
         ui->pushButton_3->setEnabled(true);
         ui->pushButton_4->setEnabled(true);
         ui->pushButton_5->setEnabled(true);
@@ -67,7 +63,7 @@ void MainWindow::on_pushButton_clicked() {
 
         plot.plotGraph(str, scene, pen, ui->checkBox->isChecked());
         plot.plotGraphAxis(scene, pen);
-
+        builtGraphFlag = true;
         //clock_t time_end = clock();
         //double time_dif = (double)(time_end - time_start) / CLOCKS_PER_SEC;
         //printf("%lf\n", time_dif);
@@ -76,12 +72,10 @@ void MainWindow::on_pushButton_clicked() {
 
 void MainWindow::on_pushButton_2_clicked() {
     scene->clear();
-    scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    ui->graphicsView->items().clear();
+
     str[0] = '\0';
     ui->checkBox->setEnabled(false);
-    ui->lineEdit->setReadOnly(false);
-    ui->pushButton->setEnabled(true);
-    ui->pushButton_2->setEnabled(false);
     ui->pushButton_3->setEnabled(false);
     ui->pushButton_4->setEnabled(false);
     ui->pushButton_5->setEnabled(false);
@@ -94,7 +88,7 @@ void MainWindow::on_pushButton_2_clicked() {
 // смещение графика по х влево
 void MainWindow::on_pushButton_3_clicked() {
     scene->clear();
-    scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    ui->graphicsView->items().clear();
 
     plot.setXMin(plot.getXMin() - 1);
     plot.setXMax(plot.getXMax() - 1);
@@ -106,7 +100,7 @@ void MainWindow::on_pushButton_3_clicked() {
 // смещение графика по х вправо
 void MainWindow::on_pushButton_4_clicked() {
     scene->clear();
-    scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    ui->graphicsView->items().clear();
 
     plot.setXMin(plot.getXMin() + 1);
     plot.setXMax(plot.getXMax() + 1);
@@ -117,7 +111,7 @@ void MainWindow::on_pushButton_4_clicked() {
 // смещение графика по у вверх
 void MainWindow::on_pushButton_5_clicked() {
     scene->clear();
-    scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    ui->graphicsView->items().clear();
 
     plot.setYMin(plot.getYMin() + 1);
     plot.setYMax(plot.getYMax() + 1);
@@ -129,7 +123,7 @@ void MainWindow::on_pushButton_5_clicked() {
 // смещение графика по у вниз
 void MainWindow::on_pushButton_6_clicked() {
     scene->clear();
-    scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    ui->graphicsView->items().clear();
 
     plot.setYMin(plot.getYMin() - 1);
     plot.setYMax(plot.getYMax() - 1);
@@ -141,7 +135,7 @@ void MainWindow::on_pushButton_6_clicked() {
 // увеличение графика
 void MainWindow::on_pushButton_7_clicked(){
     scene->clear();
-    scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    ui->graphicsView->items().clear();
     if (plot.getYMax()- plot.getYMin() > 10) {
         plot.setYMin(plot.getYMin() + 1);
         plot.setYMax(plot.getYMax() - 1);
@@ -157,7 +151,8 @@ void MainWindow::on_pushButton_7_clicked(){
 // отдаление от графика
 void MainWindow::on_pushButton_8_clicked() {
     scene->clear();
-    scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    ui->graphicsView->items().clear();
+
     plot.setYMin(plot.getYMin() - 1);
     plot.setYMax(plot.getYMax() + 1);
     plot.setXMin(plot.getXMin() - 1);
@@ -189,7 +184,7 @@ void MainWindow::on_pushButton_10_clicked() {
 void MainWindow::on_checkBox_stateChanged(int arg1) {
     if (ui->lineEdit->text().length() != 0) {
         scene->clear();
-        scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+        ui->graphicsView->items().clear();
 
         plot.setYMax(10);
         plot.setYMin(-10);
@@ -249,4 +244,19 @@ void MainWindow::on_pushButton_13_clicked() {
 void MainWindow::on_pushButton_14_clicked() {
     derivativeWindow = new DerivativeWindow(this);
     derivativeWindow->show();
+}
+
+void MainWindow::on_lineEdit_textEdited(const QString &arg1) {
+    if (builtGraphFlag) {
+        builtGraphFlag = false;
+        scene->clear();
+        ui->graphicsView->items().clear();
+
+        ui->pushButton_3->setEnabled(false);
+        ui->pushButton_4->setEnabled(false);
+        ui->pushButton_5->setEnabled(false);
+        ui->pushButton_6->setEnabled(false);
+        ui->pushButton_7->setEnabled(false);
+        ui->pushButton_8->setEnabled(false);
+    }
 }

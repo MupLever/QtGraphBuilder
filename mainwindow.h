@@ -73,6 +73,8 @@ private slots:
 
     void on_pushButton_14_clicked();
 
+    void on_lineEdit_textEdited(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
     TableOfValues *tableOfValuesWindow;
@@ -85,5 +87,7 @@ private:
     char str[50];
     Plot plot;
     FILE* f_logs;
+
+    bool builtGraphFlag;
 };
 #endif // MAINWINDOW_H
