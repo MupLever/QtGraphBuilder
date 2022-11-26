@@ -8,9 +8,6 @@ CompareWindow::CompareWindow(QWidget *parent) :
     setWindowTitle("GROW");
     setFixedSize(QSize(820,580)); // фиксирование размеров окна
 
-    ui->checkBox->setCheckState(Qt::Unchecked);
-    ui->checkBox->setEnabled(false);
-
     scene = new QGraphicsScene;
     ui->graphicsView->setScene(scene);
 
@@ -31,6 +28,10 @@ CompareWindow::~CompareWindow() {
     delete ui;
 }
 
+void CompareWindow::load(QString _lineEdit) {
+    ui->lineEdit->setText(_lineEdit);
+}
+
 void CompareWindow::on_pushButton_3_clicked() {
     close();
 }
@@ -46,7 +47,7 @@ void CompareWindow::SetStr() {
 
     for (i = 0; i < len_func2; i++)
         str_func2[i] = std_str_func2[i];
-    str_func2[len_func1] = '\0';
+    str_func2[len_func2] = '\0';
     trim(str_func2);
 }
 
@@ -62,14 +63,14 @@ void CompareWindow::on_pushButton_clicked() {
         if (valid_str(str_func1) != 0 ||
             flag1 ||
             strlen(str_func1) == 0) {
-            QMessageBox msgBox(QMessageBox::Information,
+            QMessageBox msgBox(QMessageBox::Warning,
                                "GROW", "Первое выражение содержит ошибку!",
                                QMessageBox::Ok);
             msgBox.exec();
         } else if (valid_str(str_func2) != 0 ||
                    flag2 ||
                    strlen(str_func2) == 0) {
-            QMessageBox msgBox(QMessageBox::Information,
+            QMessageBox msgBox(QMessageBox::Warning,
                                "GROW", "Второе выражение содержит ошибку!",
                                QMessageBox::Ok);
             msgBox.exec();
@@ -80,10 +81,8 @@ void CompareWindow::on_pushButton_clicked() {
 
             plot.plotGraph(str_func1, scene, QPen(Qt::green), false);
             plot.plotGraph(str_func2, scene, QPen(Qt::blue), false);
-
             plot.plotGraphAxis(scene, pen);
 
-            ui->checkBox->setEnabled(true);
             builtGraphFlag = true;
         }
     } else {
@@ -95,22 +94,6 @@ void CompareWindow::on_pushButton_clicked() {
     ok_lg = ok_rg = false;
 }
 
-void CompareWindow::on_checkBox_stateChanged(int arg1) {
-    if (ui->lineEdit->text().length() != 0) {
-        scene->addRect(250, 0, 500, 510, QPen(Qt::white), QBrush(Qt::white));
-        plot.setYMin(-10);
-        plot.setYMax(10);
-        if (arg1 == Qt::Unchecked) {
-            plot.plotGraph(str_func1, scene, QPen(Qt::green), false);
-
-        } else {
-            plot.plotGraph(str_func1, scene, QPen(Qt::green), true);
-        }
-        plot.plotGraph(str_func2, scene, QPen(Qt::blue), false);
-        plot.plotGraphAxis(scene, pen);
-    }
-}
-
 void CompareWindow::on_pushButton_2_clicked() {
     scene->addRect(250, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
     str_func1[0] = '\0';
@@ -119,8 +102,6 @@ void CompareWindow::on_pushButton_2_clicked() {
     ui->lineEdit_2->setText("");
     ui->lineEdit_3->setText("");
     ui->lineEdit_4->setText("");
-
-    ui->checkBox->setEnabled(false);
 
     ui->pushButton->setEnabled(true);
     ui->pushButton_2->setEnabled(false);
@@ -131,7 +112,6 @@ void CompareWindow::someLineEdited() {
         builtGraphFlag = false;
         scene->clear();
         ui->graphicsView->items().clear();
-        ui->lineEdit_4->setText("");
     }
 }
 void CompareWindow::on_lineEdit_textEdited(const QString &arg1) {

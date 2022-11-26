@@ -19,12 +19,13 @@ class TableOfValues : public QDialog
 
 public:
     explicit TableOfValues(QWidget *parent = nullptr);
+    void load(QString _lineEdit);
     ~TableOfValues();
 
 private slots:
-    void on_pushButton_2_clicked();
-
     void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
 
     void on_pushButton_3_clicked();
 
@@ -34,11 +35,19 @@ private slots:
 
     void on_radioButton_2_clicked();
 
+    void on_lineEdit_3_textEdited(const QString &arg1);
+
+    void on_lineEdit_textEdited(const QString &arg1);
+
+    void on_lineEdit_2_textEdited(const QString &arg1);
+
+    void on_lineEdit_4_textEdited(const QString &arg1);
+
 private:
     void calculateTable(int count, bool options); // строит таблицу
     void clearWindow(); // очищает окно и поля ввода
     void SetAtributes(); // устанавливает аттрибуты
-
+    void someLineEdited();
     Ui::TableOfValues *ui;
 
     QStandardItemModel *model;
@@ -48,6 +57,7 @@ private:
     bool ok_lg, // ставится в 1, если вернулось корректное значение левой границы
          ok_rg, // ставится в 1, если вернулось корректное значение правой границы
          ok_count, // ставится в 1, если вернулось корректное количества записей
+         builtTableFlag,// ставится в 1 если таблица была построена
          radioButtonChecked_1, // ставится в 1, если нажат radio_button_1
          radioButtonChecked_2; // ставится в 1, если нажат radio_button_2
 

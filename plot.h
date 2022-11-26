@@ -28,6 +28,7 @@ public:
     // закрашивание области под графиком
     void brushGraph(QGraphicsScene *scene, double a, double b);
 
+    void addCircle(QGraphicsScene *scene, double x, double y);
     void setXMin(const double xmin) { this->xmin = xmin; }
     void setYMin(const double ymin) { this->ymin = ymin; }
     void setXMax(const double xmax) { this->xmax = xmax; }
