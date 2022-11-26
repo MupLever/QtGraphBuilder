@@ -91,10 +91,16 @@ void Plot::plotGraph(char *str, QGraphicsScene *scene, QPen pen, bool check) {
 void Plot::brushGraph(QGraphicsScene *scene, double a, double b) {
     int left_border = (round((a - xmin) / kx)),
          right_border = (round((b - xmin) / kx));
-    for (int i = left_border; i < right_border && i < 498; ++i) {
+    for (int i = left_border; i < right_border && i < 498; i += 4) {
         if (points[i].y >= 0 && points[i].y <= 500 &&
             points[i + 1].y >= 0 && points[i + 1].y <= 500) {
             scene->addRect(points[i].x, y0, points[i + 1].x - points[i].x, points[i].y - y0 - (points[i].y > y0 ? 4 : -4), QPen(Qt::green), QBrush(Qt::green));
         }
     }
+}
+
+void Plot::addCircle(QGraphicsScene *scene, double x, double y) {
+    int i = (x - xmin) / kx + 260;
+    int j = 490 - (round((y - ymin) / ky));
+    scene->addEllipse(i, j, 5, 5, QPen(Qt::blue), QBrush(Qt::blue));
 }

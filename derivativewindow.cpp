@@ -9,6 +9,8 @@ DerivativeWindow::DerivativeWindow(QWidget *parent) :
     setWindowTitle("GROW");
     setFixedSize(QSize(850,530)); // фиксрование размеров окна
 
+    ui->lineEdit_4->setReadOnly(true);
+    ui->lineEdit_5->setReadOnly(true);
     scene = new QGraphicsScene;
     ui->graphicsView->setScene(scene);
 
@@ -30,7 +32,12 @@ DerivativeWindow::DerivativeWindow(QWidget *parent) :
 
 DerivativeWindow::~DerivativeWindow() {
     scene->clear();
+    ui->graphicsView->items().clear();
     delete ui;
+}
+
+void DerivativeWindow::load(QString _lineEdit) {
+    ui->lineEdit->setText(_lineEdit);
 }
 
 void DerivativeWindow::calculateDerivative() {
@@ -54,10 +61,14 @@ void DerivativeWindow::calculateDerivative() {
 
     result = calculate(tail, 0.5 * (b + a));
 
-    if (result.flag_division_by_zero || result.flag_scope_definition)
+    if (result.flag_division_by_zero || result.flag_scope_definition) {
         ui->lineEdit_4->setText("Нет");
-    else
-        ui->lineEdit_4->setText(QString::number(round(1000000 * result.y) / 1000000));
+        ui->lineEdit_5->setText("Нет");
+    } else {
+        plot.addCircle(scene, result.x, result.y);
+        ui->lineEdit_4->setText(QString::number(round(100000 * result.x) / 100000));
+        ui->lineEdit_5->setText(QString::number(round(1000000 * result.y) / 1000000));
+    }
 }
 
 
@@ -133,6 +144,7 @@ void DerivativeWindow::on_pushButton_2_clicked() {
     ui->lineEdit_2->setText("");
     ui->lineEdit_3->setText("");
     ui->lineEdit_4->setText("");
+    ui->lineEdit_5->setText("");
 }
 
 void DerivativeWindow::on_radioButton_clicked() {

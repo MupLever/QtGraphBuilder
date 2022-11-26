@@ -4,20 +4,28 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow) {
     ui->setupUi(this);
+
     setWindowTitle("GROW");
+    setFixedSize(QSize(950,550));
+    ui->graphicsView->setRenderHint(QPainter::Antialiasing);
+
     ui->checkBox->setCheckState(Qt::Unchecked);
+
+    ui->checkBox->setEnabled(false);
+
     ui->pushButton_3->setEnabled(false);
     ui->pushButton_4->setEnabled(false);
     ui->pushButton_5->setEnabled(false);
     ui->pushButton_6->setEnabled(false);
     ui->pushButton_7->setEnabled(false);
     ui->pushButton_8->setEnabled(false);
+
     scene = new QGraphicsScene;
     ui->graphicsView->setScene(scene);
+
     pen.setColor(Qt::red);
     pen.setWidth(2);
-    setFixedSize(QSize(950,550));
-    ui->graphicsView->setRenderHint(QPainter::Antialiasing);
+
     builtGraphFlag = false;
 }
 
@@ -51,6 +59,8 @@ void MainWindow::on_pushButton_clicked() {
     } else {
         WriteFile(f_logs, stroka);
         ui->checkBox->setEnabled(true);
+
+        ui->pushButton->setEnabled(false);
 
         ui->pushButton_3->setEnabled(true);
         ui->pushButton_4->setEnabled(true);
@@ -222,6 +232,7 @@ void MainWindow::on_pushButton_12_clicked() {
 //    window.setModal(true);
 //    window.exec();
     tableOfValuesWindow = new TableOfValues(this);
+    tableOfValuesWindow->load(ui->lineEdit->text());
     tableOfValuesWindow->show();
 }
 
@@ -230,6 +241,7 @@ void MainWindow::on_pushButton_11_clicked() {
 //    window.setModal(true);
 //    window.exec();
     compareWindow = new CompareWindow(this);
+    compareWindow->load(ui->lineEdit->text());
     compareWindow->show();
 }
 
@@ -238,11 +250,13 @@ void MainWindow::on_pushButton_13_clicked() {
 //    window.setModal(true);
 //    window.exec();
     integralWindow = new IntegralWindow(this);
+    integralWindow->load(ui->lineEdit->text());
     integralWindow->show();
 }
 
 void MainWindow::on_pushButton_14_clicked() {
     derivativeWindow = new DerivativeWindow(this);
+    derivativeWindow->load(ui->lineEdit->text());
     derivativeWindow->show();
 }
 
@@ -251,6 +265,10 @@ void MainWindow::on_lineEdit_textEdited(const QString &arg1) {
         builtGraphFlag = false;
         scene->clear();
         ui->graphicsView->items().clear();
+
+        ui->checkBox->setEnabled(false);
+
+        ui->pushButton->setEnabled(true);
 
         ui->pushButton_3->setEnabled(false);
         ui->pushButton_4->setEnabled(false);

@@ -32,6 +32,7 @@ class DerivativeWindow : public QDialog
 
 public:
     explicit DerivativeWindow(QWidget *parent = nullptr);
+    void load(QString _lineEdit);
     ~DerivativeWindow();
 private:
     // инициализирует строку после пользовательского ввода

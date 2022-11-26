@@ -17,15 +17,22 @@ IntegralWindow::IntegralWindow(QWidget *parent) :
 
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
     setFixedSize(QSize(800, 550));
+    ui->progressBar->setValue(0);
+    ui->lineEdit_4->setReadOnly(true);
 }
 
 IntegralWindow::~IntegralWindow() {
     delete ui;
 }
+
+void IntegralWindow::load(QString _lineEdit) {
+    ui->lineEdit->setText(_lineEdit);
+}
+
 double IntegralWindow::IntegralCalculate(bool *flag) {
-    double eps = 0.00001, s = 0, s1 = eps + 1, dx;
+    double eps = 0.0001, s = 0, s1 = eps + 1, dx;
     Point point;
-    int n = 2;
+    int n = 16;
     while (fabs(s1 - s) > eps) {
         n *= 2;
         dx = (b - a) / n;
@@ -42,7 +49,7 @@ double IntegralWindow::IntegralCalculate(bool *flag) {
         }
         s *= dx;
     }
-    s = round(s * 10000) / 10000;
+    s = round(s * 1000) / 1000;
     return s;
 }
 void IntegralWindow::SetStr() {
@@ -71,16 +78,22 @@ void IntegralWindow::on_pushButton_clicked() {
             flag ||
             strlen(str) == 0 ||
             a >= b) {
-            QMessageBox msgBox(QMessageBox::Information,
+            QMessageBox msgBox(QMessageBox::Warning,
                                "GROW", "Неверное выражение либо неверно задан диапазон.",
                                QMessageBox::Ok);
             msgBox.exec();
         } else {
             bool flag = false;
             builtGraphFlag = true;
+            for (int i = 1; i < 51; ++i) {
+                ui->progressBar->setValue(i);
+
+            }
             double result = IntegralCalculate(&flag);
+
             if (flag) {
                 ui->lineEdit_4->setText("Не определен");
+                ui->progressBar->setValue(0);
             } else {
                 ui->lineEdit_4->setText(QString::number(result));
 
@@ -93,10 +106,11 @@ void IntegralWindow::on_pushButton_clicked() {
                 plot.plotGraph(str, scene, pen, true);
                 plot.brushGraph(scene, a, b);
                 plot.plotGraphAxis(scene, pen);
+                ui->progressBar->setValue(100);
             }
         }
     } else {
-        QMessageBox msgBox(QMessageBox::Information,
+        QMessageBox msgBox(QMessageBox::Warning,
                            "GROW", "Неверно задан диапазон.",
                            QMessageBox::Ok);
         msgBox.exec();
@@ -113,6 +127,8 @@ void IntegralWindow::on_pushButton_2_clicked() {
     ui->lineEdit_3->setText("");
     ui->lineEdit_4->setText("");
 
+    ui->progressBar->setValue(0);
+
     plot.setXMin(-10);
     plot.setXMax(10);
 
@@ -126,6 +142,7 @@ void IntegralWindow::someLineEdited() {
         scene->clear();
         ui->graphicsView->items().clear();
         ui->lineEdit_4->setText("");
+        ui->progressBar->setValue(0);
     }
 }
 void IntegralWindow::on_lineEdit_textEdited(const QString &arg1) {

@@ -6,16 +6,16 @@ TableOfValues::TableOfValues(QWidget *parent) :
     ui(new Ui::TableOfValues)
 {
     ui->setupUi(this);
+
     setWindowTitle("GROW");
     setFixedSize(QSize(650,400)); // фиксирует размер окна
-    ui->pushButton_3->setEnabled(false); // делает кнопку "очистить" недоступной
 
     ok_lg =                false;
     ok_rg =                false;
     ok_count =             false;
     radioButtonChecked_1 = false;
     radioButtonChecked_2 = false;
-
+    builtTableFlag = false;
     head = nullptr;
     tail = nullptr;
 
@@ -27,7 +27,12 @@ TableOfValues::TableOfValues(QWidget *parent) :
     str[0] = '\0';
 }
 
+void TableOfValues::load(QString _lineEdit) {
+    ui->lineEdit_3->setText(_lineEdit);
+}
+
 TableOfValues::~TableOfValues() {
+    clearWindow();
     delete ui;
 }
 
@@ -142,14 +147,7 @@ void TableOfValues::on_pushButton_clicked() {
             msgBox.exec();
         } else {
             calculateTable(count, radioButtonChecked_2);
-
-            ui->lineEdit->setReadOnly(true);
-            ui->lineEdit_2->setReadOnly(true);
-            ui->lineEdit_3->setReadOnly(true);
-            ui->lineEdit_4->setReadOnly(true);
-
-            ui->pushButton_3->setEnabled(true);
-            ui->pushButton->setEnabled(false);
+            builtTableFlag = true;
         }
     } else {
         QMessageBox msgBox(QMessageBox::Information,
@@ -161,19 +159,15 @@ void TableOfValues::on_pushButton_clicked() {
     ok_lg = ok_rg = ok_count = false;
 }
 void TableOfValues::clearWindow() {
-    ui->lineEdit->setReadOnly(false);
-    ui->lineEdit_2->setReadOnly(false);
-    ui->lineEdit_3->setReadOnly(false);
-    ui->lineEdit_4->setReadOnly(false);
     ui->lineEdit->setText("");
     ui->lineEdit_2->setText("");
     ui->lineEdit_3->setText("");
     ui->lineEdit_4->setText("");
-    delete model;
+    if (builtTableFlag)
+        delete model;
     radioButtonChecked_1 = false;
     radioButtonChecked_2 = false;
-    ui->pushButton->setEnabled(true);
-    ui->pushButton_3->setEnabled(false);
+    builtTableFlag = false;
 }
 void TableOfValues::on_pushButton_3_clicked() {
     clearWindow();
@@ -193,20 +187,13 @@ void TableOfValues::on_checkBox_stateChanged(int arg1) {
         ui->label_2->show();
         ui->label_3->show();
     }
-    if (radioButtonChecked_1 || radioButtonChecked_2) {
-        ui->lineEdit->setReadOnly(false);
-        ui->lineEdit_2->setReadOnly(false);
-        ui->lineEdit_3->setReadOnly(false);
-        ui->lineEdit_4->setReadOnly(false);
-        ui->pushButton_3->setEnabled(false);
-        ui->pushButton->setEnabled(true);
-    }
 }
 // Выбрана функция
 void TableOfValues::on_radioButton_clicked() {
     if (radioButtonChecked_2) {
         ui->radioButton_2->setChecked(Qt::Unchecked);
-        calculateTable(count, false);
+        if (builtTableFlag)
+            calculateTable(count, false);
         radioButtonChecked_2 = false;
         radioButtonChecked_1 = true;
     }
@@ -216,8 +203,30 @@ void TableOfValues::on_radioButton_clicked() {
 void TableOfValues::on_radioButton_2_clicked() {
     if (radioButtonChecked_1) {
         ui->radioButton->setChecked(Qt::Unchecked);
-        calculateTable(count, true);
+        if (builtTableFlag)
+            calculateTable(count, false);
         radioButtonChecked_1 = false;
         radioButtonChecked_2 = true;
     }
+}
+void TableOfValues::someLineEdited() {
+    if (builtTableFlag) {
+        builtTableFlag = false;
+        delete model;
+    }
+}
+void TableOfValues::on_lineEdit_3_textEdited(const QString &arg1) {
+    someLineEdited();
+}
+
+void TableOfValues::on_lineEdit_textEdited(const QString &arg1) {
+    someLineEdited();
+}
+
+void TableOfValues::on_lineEdit_2_textEdited(const QString &arg1) {
+    someLineEdited();
+}
+
+void TableOfValues::on_lineEdit_4_textEdited(const QString &arg1) {
+    someLineEdited();
 }

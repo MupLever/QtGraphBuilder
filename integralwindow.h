@@ -21,6 +21,7 @@ class IntegralWindow : public QDialog
 
 public:
     explicit IntegralWindow(QWidget *parent = nullptr);
+    void load(QString _lineEdit);
     ~IntegralWindow();
 
 private slots:
