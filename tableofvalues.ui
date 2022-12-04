@@ -43,6 +43,9 @@
       </item>
       <item>
        <widget class="QLineEdit" name="lineEdit_3">
+        <property name="maxLength">
+         <number>49</number>
+        </property>
         <property name="placeholderText">
          <string>Пример: x*x+5-sin(x)</string>
         </property>
@@ -107,6 +110,9 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="maxLength">
+           <number>9</number>
+          </property>
           <property name="placeholderText">
            <string>Пример: 0</string>
           </property>
@@ -137,6 +143,9 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="maxLength">
+           <number>9</number>
+          </property>
           <property name="placeholderText">
            <string>Пример: 2</string>
           </property>
@@ -166,6 +175,9 @@
             <width>150</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="maxLength">
+           <number>9</number>
           </property>
          </widget>
         </item>
