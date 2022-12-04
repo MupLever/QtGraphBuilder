@@ -76,10 +76,16 @@ void IntegralWindow::on_pushButton_clicked() {
     if (ok_lg && ok_rg) {
         if (valid_str(str) != 0 ||
             flag ||
-            strlen(str) == 0 ||
-            a >= b) {
-            QMessageBox msgBox(QMessageBox::Warning,
-                               "GROW", "Неверное выражение либо неверно задан диапазон.",
+            strlen(str) == 0) {
+            QMessageBox msgBox(QMessageBox::Information,
+                               "GROW", "Выражение содержит ошибку.\n"
+                                       "Используйте функции, определенные в руководстве пользователя.",
+                               QMessageBox::Ok);
+            msgBox.exec();
+        } else if (a >= b) {
+            QMessageBox msgBox(QMessageBox::Information,
+                               "GROW", "Неверно задан диапазон.\n"
+                                       "Помните, что левая граница не может быть больше правой!",
                                QMessageBox::Ok);
             msgBox.exec();
         } else {
@@ -110,8 +116,9 @@ void IntegralWindow::on_pushButton_clicked() {
             }
         }
     } else {
-        QMessageBox msgBox(QMessageBox::Warning,
-                           "GROW", "Неверно задан диапазон.",
+        QMessageBox msgBox(QMessageBox::Information,
+                           "GROW", "Неверно задан диапазон или количество.\n"
+                                   "Диапазон задается двумя вещественными числами!",
                            QMessageBox::Ok);
         msgBox.exec();
     }

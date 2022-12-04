@@ -53,7 +53,8 @@ void MainWindow::on_pushButton_clicked() {
         flag ||
         strlen(str) == 0) {
         QMessageBox msgBox(QMessageBox::Information,
-                           "GROW", "Неверное выражение",
+                           "GROW", "Выражение содержит ошибку.\n"
+                                   "Используйте функции, определенные в руководстве пользователя.",
                            QMessageBox::Ok);
         msgBox.exec();
     } else {
