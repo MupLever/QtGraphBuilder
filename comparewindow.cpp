@@ -63,14 +63,14 @@ void CompareWindow::on_pushButton_clicked() {
         if (valid_str(str_func1) != 0 ||
             flag1 ||
             strlen(str_func1) == 0) {
-            QMessageBox msgBox(QMessageBox::Warning,
+            QMessageBox msgBox(QMessageBox::Information,
                                "GROW", "Первое выражение содержит ошибку!",
                                QMessageBox::Ok);
             msgBox.exec();
         } else if (valid_str(str_func2) != 0 ||
                    flag2 ||
                    strlen(str_func2) == 0) {
-            QMessageBox msgBox(QMessageBox::Warning,
+            QMessageBox msgBox(QMessageBox::Information,
                                "GROW", "Второе выражение содержит ошибку!",
                                QMessageBox::Ok);
             msgBox.exec();

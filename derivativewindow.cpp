@@ -171,6 +171,7 @@ void DerivativeWindow::someLineEdited() {
         scene->clear();
         ui->graphicsView->items().clear();
         ui->lineEdit_4->setText("");
+        ui->lineEdit_5->setText("");
     }
 }
 
