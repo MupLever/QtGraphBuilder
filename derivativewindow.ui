@@ -62,6 +62,9 @@
       </item>
       <item>
        <widget class="QLineEdit" name="lineEdit">
+        <property name="maxLength">
+         <number>49</number>
+        </property>
         <property name="placeholderText">
          <string>Например:  cos(x)</string>
         </property>
@@ -101,6 +104,9 @@
             <width>150</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="maxLength">
+           <number>9</number>
           </property>
           <property name="placeholderText">
            <string>Например:  0</string>
@@ -143,6 +149,9 @@
             <width>150</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="maxLength">
+           <number>9</number>
           </property>
           <property name="placeholderText">
            <string>Например:  2</string>
