@@ -204,7 +204,7 @@ void TableOfValues::on_radioButton_2_clicked() {
     if (radioButtonChecked_1) {
         ui->radioButton->setChecked(Qt::Unchecked);
         if (builtTableFlag)
-            calculateTable(count, false);
+            calculateTable(count, true);
         radioButtonChecked_1 = false;
         radioButtonChecked_2 = true;
     }

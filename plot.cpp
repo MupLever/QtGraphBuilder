@@ -34,7 +34,7 @@ void Plot::plotGraphAxis(QGraphicsScene *scene, QPen pen) {
             str_value_point.setNum(round(y * 1000) / 1000);
             item->setHtml(str_value_point);
             item->setPos(250 + x0, i - 12);
-            if (i != 274) {
+            if (round(fabs(y) * 1000) / 1000 > 0.001) {
                 scene->addItem(item);
                 scene->addEllipse(250 + x0, i, 2, 2, pen);
             }
