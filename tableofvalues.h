@@ -19,7 +19,10 @@ class TableOfValues : public QDialog
 
 public:
     explicit TableOfValues(QWidget *parent = nullptr);
+
+    // загрузка строки
     void load(QString _lineEdit);
+
     ~TableOfValues();
 
 private slots:
@@ -44,15 +47,23 @@ private slots:
     void on_lineEdit_4_textEdited(const QString &arg1);
 
 private:
-    void calculateTable(int count, bool options); // строит таблицу
-    void clearWindow(); // очищает окно и поля ввода
-    void SetAtributes(); // устанавливает аттрибуты
+     // считает таблицу
+    void calculateTable(int count, bool options);
+
+    // очищает окно и поля ввода
+    void clearWindow();
+
+    // устанавливает аттрибуты
+    void SetAtributes();
+
+    // вызывается при редактировании полей ввода
     void someLineEdited();
+
     Ui::TableOfValues *ui;
 
     QStandardItemModel *model;
 
-    char str[50];
+    char str[50]; // массив символов (функция)
 
     bool ok_lg, // ставится в 1, если вернулось корректное значение левой границы
          ok_rg, // ставится в 1, если вернулось корректное значение правой границы
@@ -67,7 +78,7 @@ private:
     double xmin, // левая граница
            xmax; // правая граница
 
-    int count;
+    int count; // количество записей в таблице
 };
 
 #endif // TABLEOFVALUES_H

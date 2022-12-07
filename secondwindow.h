@@ -23,15 +23,21 @@ private slots:
     void on_pushButton_clicked();
 
     void on_pushButton_2_clicked();
-    void buidTable();
 
     void on_pushButton_3_clicked();
 
 private:
+    // построение таблицы
+    void buidTable();
+
     Ui::SecondWindow *ui;
-    QStandardItemModel* model;
-    int page;
-    FILE *f_logs;
+
+    QStandardItemModel* model;  // модель "таблца"
+
+    int page; // номер страницы для пагинации
+
+    FILE *f_logs; // файл кэш
+
     QModelIndex index;
 };
 

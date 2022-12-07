@@ -201,18 +201,21 @@ Deque* parse(char* str) {
     int length = strlen(str), i = 0;
     bool flag_error = 0;
     while (i < length && !flag_error) {
+        // добавление в выходную строчку x
         if (str[i] == 'x') {
             data.sym = 'x';
             data.num = 0;
             head = push(head, &data);
             ++i;
         }
+        // добавление в выходную строку числа
         if (is_number(str[i])) {
             data.sym = ' ';
             data.num = get_number(str, &i);
             head = push(head, &data);
             data.num = 0;
         }
+        // закидывание в стек операции
         if (is_operation_for_parse(str[i])) {
             if (!operations.empty() && (cmp_priority(operations.top(), str[i]) && str[i] != '(')) {
                 data.sym = operations.top();
@@ -223,6 +226,7 @@ Deque* parse(char* str) {
             ++i;
             data.sym = ' ';
         }
+        // если встретилась закрыв. скобка, то ищем откр. скобку
         if (str[i] == ')') {
             while (!operations.empty() && operations.top() != '(') {
                 data.sym = operations.top();
@@ -241,6 +245,7 @@ Deque* parse(char* str) {
             ++i;
             data.sym = ' ';
         }
+        // есил токены закончились, то выкидываем все операции из стека в выходную строчку
         if (i >= length) {
             while (!operations.empty()) {
                 data.sym = operations.top();

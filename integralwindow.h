@@ -21,15 +21,19 @@ class IntegralWindow : public QDialog
 
 public:
     explicit IntegralWindow(QWidget *parent = nullptr);
+
+    // загрузка строки
     void load(QString _lineEdit);
+
     ~IntegralWindow();
 
 private slots:
-    void on_pushButton_3_clicked();
 
     void on_pushButton_clicked();
 
     void on_pushButton_2_clicked();
+
+    void on_pushButton_3_clicked();
 
     void on_lineEdit_textEdited(const QString &arg1);
 
@@ -45,20 +49,20 @@ private:
     // инициализирует строку после пользовательского ввода
     void SetStr();
 
-    //
+    // вызывается при редактировании полей ввода
     void someLineEdited();
 
     Ui::IntegralWindow *ui;
-    QGraphicsScene *scene;
+    QGraphicsScene *scene; // сцена отрисовеи графиков
     Deque *head, *tail;
     QPen pen;
-    char str[50];
+    char str[50]; // массив символов (функция)
     bool ok_lg, // ставится в 1, если вернулось корректное значение левой границы
          ok_rg,// ставится в 1, если вернулось корректное значение правой границы
          builtGraphFlag;
     double a, // левая граница интегрирования
            b; // правая граница интегрирования
-    Plot plot;
+    Plot plot; // объект класса построения графиков
 };
 
 #endif // INTEGRALWINDOW_H

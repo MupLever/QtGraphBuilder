@@ -32,7 +32,10 @@ class DerivativeWindow : public QDialog
 
 public:
     explicit DerivativeWindow(QWidget *parent = nullptr);
+
+    // загрузка строки
     void load(QString _lineEdit);
+
     ~DerivativeWindow();
 private:
     // инициализирует строку после пользовательского ввода
@@ -41,7 +44,7 @@ private:
     // метод золотого сечения для нахождения экстремумов
     void calculateDerivative();
 
-
+    // вызывается при редактировании полей ввода
     void someLineEdited();
 
 private slots:
@@ -64,10 +67,10 @@ private slots:
 private:
     Ui::DerivativeWindow *ui;
 
-    QGraphicsScene *scene;
+    QGraphicsScene *scene; // сцена отрисовеи графиков
     Deque *head, *tail;
     QPen pen;
-    char str[50];
+    char str[50]; // массив символов (функция)
     double xmin, //левая граница
            xmax, //правая граница
            phi; // пропорция золотого сечения
@@ -76,9 +79,9 @@ private:
          ok_rg, // ставится в 1, если вернулось корректное значение правой границы
          radioButtonChecked_1, // ставится в 1, если нажат radio_button_1
          radioButtonChecked_2, // ставится в 1, если нажат radio_button_2
-         builtGraphFlag;
+         builtGraphFlag; // ставится в 1, если график построен
 
-    Plot plot;
+    Plot plot; // объект класса построения графиков
 };
 
 #endif // DERIVATIVEWINDOW_H

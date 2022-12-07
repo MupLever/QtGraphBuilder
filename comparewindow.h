@@ -21,7 +21,10 @@ class CompareWindow : public QDialog
 
 public:
     explicit CompareWindow(QWidget *parent = nullptr);
+
+    // загрузка строки
     void load(QString _lineEdit);
+
     ~CompareWindow();
 
 private slots:
@@ -43,25 +46,26 @@ private:
     // инициализирует строку после пользовательского ввода
     void SetStr();
 
-    //
+    // вызывается при редактировании полей ввода
     void someLineEdited();
 
     Ui::CompareWindow *ui;
 
-    char str_func1[50], str_func2[50];
+    char str_func1[50], // массив символов (первая функция)
+         str_func2[50]; // массив символов (вторая функция)
 
-    QGraphicsScene *scene;
+    QGraphicsScene *scene; // сцена отрисовеи графиков
 
-    double xmin,
-           xmax,
-           ymin,
-           ymax;
+    double xmin, // левая граница
+           xmax, // правая граница
+           ymin, // нижняя граница
+           ymax; // верхняя граница
 
     bool ok_lg, // ставится в 1, если вернулось корректное значение левой границы
          ok_rg, // ставится в 1, если вернулось корректное значение правой границы
          builtGraphFlag;
     QPen pen;
-    Plot plot;
+    Plot plot; // объект класса построения граифков
 };
 
 #endif // COMPAREWINDOW_H

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "mainwindow.h"
 
+// структура данных запись
 struct Record {
     char func[50];
     char date[20];

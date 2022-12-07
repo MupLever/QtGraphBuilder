@@ -29,21 +29,42 @@ public:
     void brushGraph(QGraphicsScene *scene, double a, double b);
 
     void addCircle(QGraphicsScene *scene, double x, double y);
+
+    // устанавливает левую границу
     void setXMin(const double xmin) { this->xmin = xmin; }
+
+    // устанавливает нижнюю границу
     void setYMin(const double ymin) { this->ymin = ymin; }
+
+    // устанавливает правую границу
     void setXMax(const double xmax) { this->xmax = xmax; }
+
+    // устанавливает верхнюю границу
     void setYMax(const double ymax) { this->ymax = ymax; }
 
-
+    // возвращает левую границу
     double getXMin() { return xmin; }
+
+    // возвращает нижнюю границу
     double getYMin() { return ymin; }
+
+    // возвращает правую границу
     double getXMax() { return xmax; }
+
+    // возвращает верхнюю границу
     double getYMax() { return ymax; }
+
+    // возвращает центр координат по Х
     double getX0() { return x0; }
+
+    // возвращает центр координат по У
     double getY0() { return y0; }
 
-    void setXY(); // устанавливает х0 и у0
-    void setKXY();// устанавливает коэффициенты масштабирования
+    // устанавливает х0 и у0
+    void setXY();
+
+    // устанавливает коэффициенты масштабирования
+    void setKXY();
 
 private:
     Deque *head,
@@ -51,9 +72,9 @@ private:
 
     Point points[SCREENW];
 
-    double x0, y0,
-           xmin, ymin,
-           xmax, ymax,
-           kx, ky;
+    double x0, y0, // координата центра пересечения осей
+           xmin, ymin, // левая и нижняя границы
+           xmax, ymax, // правая и верхняя границы
+           kx, ky; // коэфы масштабирования
 };
 #endif // PLOT_H
