@@ -32,9 +32,9 @@ void IntegralWindow::load(QString _lineEdit) {
 double IntegralWindow::IntegralCalculate(bool *flag) {
     double eps = 0.0001, s = 0, s1 = eps + 1, dx;
     Point point;
-    int n = 16;
+    int n = 2;
     while (fabs(s1 - s) > eps) {
-        n *= 2;
+        n = n << 1;
         dx = (b - a) / n;
         s1 = s;
         s = 0;

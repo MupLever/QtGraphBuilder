@@ -38,8 +38,10 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
+
     ~MainWindow();
 private:
+    // инициализирует массив символов
     void SetStr();
 
 private slots:
@@ -63,8 +65,6 @@ private slots:
 
     void on_pushButton_10_clicked();
 
-    void on_checkBox_stateChanged(int arg1);
-
     void on_pushButton_12_clicked();
 
     void on_pushButton_11_clicked();
@@ -72,6 +72,8 @@ private slots:
     void on_pushButton_13_clicked();
 
     void on_pushButton_14_clicked();
+
+    void on_checkBox_stateChanged(int arg1);
 
     void on_lineEdit_textEdited(const QString &arg1);
 
@@ -82,12 +84,12 @@ private:
     IntegralWindow *integralWindow;
     DerivativeWindow *derivativeWindow;
 
-    QGraphicsScene *scene;
+    QGraphicsScene *scene; // сцена отрисовеи графиков
     QPen pen;
-    char str[50];
-    Plot plot;
-    FILE* f_logs;
+    char str[50]; // массив символов (функция)
+    Plot plot; // объект класса построения графика
+    FILE* f_logs; // файл кэша
 
-    bool builtGraphFlag;
+    bool builtGraphFlag; // ставится в 1, если график построен
 };
 #endif // MAINWINDOW_H
