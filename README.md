@@ -9,4 +9,4 @@
 4.	Выполните следующую команду: qmake cproject.pro;
 5.	Выполните следующую команду: make -j1;
 6.	Для запуска выполните следующую команду: ./cproject.
-![image](https://user-images.githubusercontent.com/90530335/218308264-47c0bd25-2f91-41d2-b3d5-407773cda81a.png)
+Ссылка на полную документацию: https://drive.google.com/drive/folders/1sAFuZIrvI6-_FSewCmhvArVgLI-bii2p?usp=sharing
